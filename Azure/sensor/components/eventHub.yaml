@@ -1,0 +1,18 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: sample-topic
+spec:
+  type: bindings.azure.eventhubs
+  version: v1
+  metadata:
+  - name: connectionString      # Azure EventHubs connection string
+    value: "Endpoint=sb://balenacloudblock.servicebus.windows.net/;SharedAccessKeyName=full;SharedAccessKey=eKmzTPSGmZWDydcRtT7tNzuKIDcDROYqPmrMDQ605NA=;EntityPath=balenacloudblockpoc"
+  - name: consumerGroup         # EventHubs consumer group
+    value: "$Default"
+  - name: storageAccountName    # Azure Storage Account Name
+    value: "balenacloudblock"   
+  - name: storageAccountKey     # Azure Storage Account Key
+    value: "oktdN6BsoIoe54X1i7090GRXj1w6V9TpKgYLPc293p6aYXpjCUiiElX936PFeB1dK4hkUlLgYv4CehogwzOfAQ=="                
+  - name: storageContainerName  # Azure Storage Container Name
+    value: "cloudblock"
