@@ -1,2 +1,3 @@
 Azure/sensor/components/eventHub.yaml
 Azure/sensor/components/blob.yaml
+**/components/*.yaml
