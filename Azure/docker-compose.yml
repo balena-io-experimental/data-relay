@@ -10,3 +10,9 @@ services:
         network_mode: host
         volumes:
             - 'cloudblockdata:/data'
+        environment:
+            - AZURE_EH_CONNECTIONSTRING=test1
+            - AZURE_EH_CONSUMER_GROUP=test2
+            - AZURE_EH_STORAGE_ACCOUNT=test3
+            - AZURE_EH_STORAGE_ACCOUNT_KEY=test4
+            - AZURE_EH_CONTAINER_NAME=test5

@@ -1,0 +1,3 @@
+PluginBase
+requests
+pyyaml
