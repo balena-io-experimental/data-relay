@@ -3,10 +3,13 @@ import yaml
 from yamlVariableResolver import Resolver
 
 def invoke():
-    filename = "AzureEventHubOutput.yaml"
+    # these are constant
     pluginDirectory = "./plugins/"
     componentDirectory = "/app/components/"
 
+    # these are plugin/component specific
+    componentName = "Azure EventHub"
+    filename = "AzureEventHubOutput.yaml"
     connectionString = os.environ.get('AZURE_EH_CONNECTIONSTRING')
     consumerGroup = os.environ.get('AZURE_EH_CONSUMER_GROUP')
     storageAccount = os.environ.get('AZURE_EH_STORAGE_ACCOUNT')
@@ -16,17 +19,17 @@ def invoke():
 
     # if all the variables are empty, we're not configuring an EventHub, so we can quit
     if not any(variableList):
-        print("No Azure EventHub connection details set.")
+        print("No {name} connection details set".format(name=componentName))
         return
 
     # if only some of the variables are empty, then there's a configuration issue
     if not all(variableList):
-        print("Attempting to configure an Azure EventHub connection, but not all environment variables have been set.")
+        print("Attempting to configure an {name} connection, but not all environment variables have been set.".format(name=componentName))
         return
     
     # Use the custom YAML loader to resolve the inline variables 
     output = Resolver.resolve(pluginDirectory + filename)
-    print("Azure EventHub will be configured with:")
+    print("{name} will be configured with:".format(name=componentName))
     print(str(output))
 
     # write the resolved YAML to the component directory
