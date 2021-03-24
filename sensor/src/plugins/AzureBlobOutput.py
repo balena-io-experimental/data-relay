@@ -11,7 +11,7 @@ def invoke():
     componentName = "Azure BLOB storage"
     filename = "AzureBlobOutput.yaml"
     storageAccount = os.environ.get('AZURE_BLOB_STORAGE_ACCOUNT')
-    storageAccountKey = os.environ.get('AZURE_BLOB_STORAGE_ACCESS_KEY')
+    storageAccountKey = os.environ.get('AZURE_BLOB_STORAGE_ACCOUNT_KEY')
     storageContainerName = os.environ.get('AZURE_BLOB_CONTAINER_NAME')
     variableList = [storageAccount, storageAccountKey, storageContainerName]
 

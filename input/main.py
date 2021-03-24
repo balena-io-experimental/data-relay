@@ -7,9 +7,10 @@ client = mqtt.Client()
 while True:
     client.connect("localhost", 1883, 60)
     now = datetime.now()
-    date_time = now.strftime("%m/%d/%Y, %H:%M:%S")
-    print("Sending " + str(date_time))
-    msgInfo = client.publish('cloud-input', date_time, 0, False)
+    # date_time = now.strftime("%m/%d/%Y, %H:%M:%S")
+
+    print("Sending " + str(now))
+    msgInfo = client.publish('cloud-input', str(now), 0, False)
     if False == msgInfo.is_published():
         msgInfo.wait_for_publish()
     client.disconnect()

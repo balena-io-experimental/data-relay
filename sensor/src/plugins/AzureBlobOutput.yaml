@@ -9,7 +9,7 @@ spec:
   - name: storageAccount
     value: !ENV ${AZURE_BLOB_STORAGE_ACCOUNT} 
   - name: storageAccessKey
-    value: !ENV ${AZURE_BLOB_STORAGE_ACCESS_KEY} 
+    value: !ENV ${AZURE_BLOB_STORAGE_ACCOUNT_KEY} 
   - name: container
     value: !ENV ${AZURE_BLOB_CONTAINER_NAME} 
   - name: decodeBase64

@@ -12,12 +12,6 @@ services:
             - 'cloudblockdata:/data'
         depends_on: 
             - "mqtt"
-        # environment:
-        #     - AZURE_EH_CONNECTIONSTRING=test1
-        #     - AZURE_EH_CONSUMER_GROUP=test2
-        #     - AZURE_EH_STORAGE_ACCOUNT=test3
-        #     - AZURE_EH_STORAGE_ACCOUNT_KEY=test4
-        #     - AZURE_EH_CONTAINER_NAME=test5
     mqtt:
         image: eclipse-mosquitto@sha256:52d0254fc54bea116ceb5fc066331ba82ed2ae4b66e2cc238a90f708439b32d7
         # pinned to this release and NUC arch
