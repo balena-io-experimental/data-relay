@@ -13,7 +13,7 @@ dapr_port = os.getenv("DAPR_HTTP_PORT", 3500)
 blob_url = "http://localhost:{}/v1.0/bindings/blob".format(dapr_port)
 bindings = [blob_url]
 
-@app.subscribe(pubsub_name='pubsub', topic='mqtt-input')
+@app.subscribe(pubsub_name='mqtt-input', topic='cloud-input')
 def mytopic(event: v1.Event) -> None:
     data = json.loads(event.Data())
     print(f'Subscriber received: id={data["id"]}, message="{data["message"]}", content_type="{event.content_type}"',flush=True)
