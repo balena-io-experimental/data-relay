@@ -1,0 +1,30 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: blob
+spec:
+  type: bindings.gcp.bucket
+  version: v1
+  metadata:
+  - name: bucket
+    value: !ENV ${GCP_BLOB_BUCKET}
+  - name: type
+    value: !ENV ${GCP_BLOB_TYPE}
+  - name: project_id
+    value: !ENV ${GCP_BLOB_PROJECT_ID}
+  - name: private_key_id
+    value: !ENV ${GCP_BLOB_PRIVATE_KEY_ID}
+  - name: client_email
+    value: !ENV ${GCP_BLOB_CLIENT_EMAIL}
+  - name: client_id
+    value: !ENV ${GCP_BLOB_CLIENT_ID}
+  - name: auth_uri
+    value: !ENV ${GCP_BLOB_AUTH_URI}
+  - name: token_uri
+    value: !ENV ${GCP_BLOB_TOKEN_URI}
+  - name: auth_provider_x509_cert_url
+    value: !ENV ${GCP_BLOB_AUTH_PROVIDER_X509_CERT_URL}
+  - name: client_x509_cert_url
+    value: !ENV ${GCP_BLOB_CLIENT_X509_CERT_URL}
+  - name: private_key
+    value: !ENV ${GCP_BLOB_PRIVATE_KEY}
