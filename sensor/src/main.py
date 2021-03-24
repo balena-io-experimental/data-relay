@@ -17,7 +17,7 @@ bindings = [blob_url]
 def sendRequest(data):
     try:
         for url in bindings:
-            payload = { "data": data }
+            payload = { "data": data, "operation": "create" }
             response = requests.post(url, json=payload)
             print(response, flush=True)
 
