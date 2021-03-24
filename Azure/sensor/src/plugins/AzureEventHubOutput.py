@@ -3,6 +3,10 @@ import yaml
 from yamlVariableResolver import Resolver
 
 def invoke():
+    filename = "AzureEventHubOutput.yaml"
+    pluginDirectory = "./plugins/"
+    componentDirectory = "/app/components/"
+
     connectionString = os.environ.get('AZURE_EH_CONNECTIONSTRING')
     consumerGroup = os.environ.get('AZURE_EH_CONSUMER_GROUP')
     storageAccount = os.environ.get('AZURE_EH_STORAGE_ACCOUNT')
@@ -20,11 +24,13 @@ def invoke():
         print("Attempting to configure an Azure EventHub connection, but not all environment variables have been set.")
         return
     
-    output = Resolver.resolve('./plugins/AzureEventHubOutput.yaml')
+    # Use the custom YAML loader to resolve the inline variables 
+    output = Resolver.resolve(pluginDirectory + filename)
+    print("Azure EventHub will be configured with:")
     print(str(output))
-    # os.chdir(os.path.dirname(__file__))
-    # print(os.getcwd())
-    f = open('/app/components/AzureEventHubOutput.yaml', 'w')
+
+    # write the resolved YAML to the component directory
+    f = open(componentDirectory + filename, 'w')
     f.write(yaml.dump(output))
     f.close()
 
