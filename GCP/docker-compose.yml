@@ -1,0 +1,12 @@
+version: '2.1'
+volumes:
+    cloudblockdata: {}
+services:
+    sensor:
+        build: sensor
+        privileged: true
+        tty: true
+        restart: always
+        network_mode: host
+        volumes:
+            - 'cloudblockdata:/data'
