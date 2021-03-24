@@ -1,4 +1,3 @@
-import time
 import requests
 import os
 import json
@@ -9,17 +8,28 @@ from dapr.ext.grpc import App, BindingRequest
 import json
 
 app = App()
-dapr_port = os.getenv("DAPR_HTTP_PORT", 3500)
-# messageQueue_url = "http://localhost:{}/v1.0/bindings/message-queue".format(dapr_port)
-blob_url = "http://localhost:{}/v1.0/bindings/blob".format(dapr_port)
-bindings = [blob_url]
+outputComponents = []
+daprPort = os.getenv("DAPR_HTTP_PORT", 3500)
+baseUrl = "http://localhost:{}/v1.0/bindings/".format(daprPort)
+
+def findComponents():
+    try:
+        response = requests.get("http://localhost:{}/v1.0/metadata".format(daprPort))
+        # print("components found " + str(response.content), flush=True)
+        responseJson = json.loads(response.content)
+        for component in responseJson["components"]:
+            if component["name"] != "mqtt-input":
+                outputComponents.append(component["name"])
+
+    except Exception as e:
+        print(e, flush=True)
 
 def sendRequest(data):
     try:
-        for url in bindings:
+        for component in outputComponents:
             payload = { "data": data, "operation": "create" }
-            response = requests.post(url, json=payload)
-            print(response, flush=True)
+            response = requests.post(baseUrl + component, json=payload)
+            print("Sending to output {output} with response {response}".format(output=component,response=response))
 
     except Exception as e:
         print(e, flush=True)
@@ -29,4 +39,5 @@ def binding(request: BindingRequest):
     print("Data recieved from MQTT: " + request.text(), flush=True)
     sendRequest(request.text())
 
+findComponents()
 app.run(50051)
