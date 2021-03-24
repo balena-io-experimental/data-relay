@@ -1,5 +1,2 @@
-Azure/sensor/components/eventHub.yaml
-Azure/sensor/components/blob.yaml
-**/components/*.yaml
-Azure/sensor/blob.yaml
-Azure/sensor/eventHub.yaml
+
+sensor/components/blob.yaml
