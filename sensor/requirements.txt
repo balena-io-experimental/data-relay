@@ -1,0 +1,5 @@
+PluginBase
+requests
+pyyaml
+dapr
+dapr-ext-grpc

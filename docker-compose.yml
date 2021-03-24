@@ -1,0 +1,28 @@
+version: '2.1'
+volumes:
+    cloudblockdata: {}
+services:
+    sensor:
+        build: sensor
+        privileged: true
+        tty: true
+        restart: always
+        network_mode: host
+        volumes:
+            - 'cloudblockdata:/data'
+        # environment:
+        #     - AZURE_EH_CONNECTIONSTRING=test1
+        #     - AZURE_EH_CONSUMER_GROUP=test2
+        #     - AZURE_EH_STORAGE_ACCOUNT=test3
+        #     - AZURE_EH_STORAGE_ACCOUNT_KEY=test4
+        #     - AZURE_EH_CONTAINER_NAME=test5
+    mqtt:
+        image: eclipse-mosquitto@sha256:52d0254fc54bea116ceb5fc066331ba82ed2ae4b66e2cc238a90f708439b32d7
+        ports:
+            - "1883:1883"
+        restart: always
+    input:
+        build: input
+        restart: always
+        network_mode: host
+        privileged: true
