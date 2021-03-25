@@ -25,4 +25,4 @@ services:
         privileged: true
         depends_on: 
             - "mqtt"
-            - "sensor"
+            - "cloud"
