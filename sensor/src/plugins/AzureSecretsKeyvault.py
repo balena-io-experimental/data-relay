@@ -7,7 +7,7 @@ PLUGIN_TYPE = "secrets"
 def invoke():
     # these are constant
     pluginDirectory = "./plugins/"
-    componentDirectory = "/app/components/"
+    componentDirectory = "/app/components/secrets/"
 
     # these are plugin/component specific
     componentName = "Azure Secrets"
