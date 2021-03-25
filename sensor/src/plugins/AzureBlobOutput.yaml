@@ -7,10 +7,10 @@ spec:
   version: v1
   metadata:
   - name: storageAccount
-    value: !ENV ${AZURE_BLOB_STORAGE_ACCOUNT} 
+    value: !ENV ${AZURE_BLOB_STORAGE_ACCOUNT}
   - name: storageAccessKey
-    value: !ENV ${AZURE_BLOB_STORAGE_ACCOUNT_KEY} 
+    value: !ENV ${AZURE_BLOB_STORAGE_ACCOUNT_KEY}
   - name: container
-    value: !ENV ${AZURE_BLOB_CONTAINER_NAME} 
+    value: !ENV ${AZURE_BLOB_CONTAINER_NAME}
   - name: decodeBase64
     value: "false"

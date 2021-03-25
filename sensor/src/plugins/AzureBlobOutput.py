@@ -2,6 +2,8 @@ import os
 import yaml
 from yamlVariableResolver import Resolver
 
+PLUGIN_TYPE = "output"
+
 def invoke():
     # these are constant
     pluginDirectory = "./plugins/"
@@ -24,7 +26,7 @@ def invoke():
     if not all(variableList):
         print("Attempting to configure an {name} connection, but not all environment variables have been set.".format(name=componentName))
         return
-    
+
     # Use the custom YAML loader to resolve the inline variables 
     output = Resolver.resolve(pluginDirectory + filename)
     print("{name} will be configured with:".format(name=componentName))

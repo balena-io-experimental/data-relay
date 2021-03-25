@@ -7,7 +7,7 @@ RUN pip install --upgrade pip
 RUN pip3 install --user -r /requirements.txt
 
 COPY . .
-RUN mkdir -p /app/components
+RUN mkdir -p /app/components/secrets
 
 RUN wget -q https://github.com/dapr/dapr/releases/download/v1.0.1/daprd_linux_amd64.tar.gz
 RUN tar -zxvf daprd_linux_amd64.tar.gz

@@ -2,23 +2,24 @@ import os
 import yaml
 from yamlVariableResolver import Resolver
 
-PLUGIN_TYPE = "output"
+PLUGIN_TYPE = "secrets"
 
 def invoke():
     # these are constant
     pluginDirectory = "./plugins/"
-    componentDirectory = "/app/components/"
+    componentDirectory = "/app/components/secrets/"
 
     # these are plugin/component specific
-    componentName = "AWS SQS"
-    filename = "AWS_SQS_Output.yaml"
-    queuename = os.environ.get('AWS_SQS_QUEUE_NAME')
-    region = os.environ.get('AWS_SQS_REGION')
-    accesskey = os.environ.get('AWS_ACCESS_KEY')
-    secretkey = os.environ.get('AWS_SECRET_KEY')
-    variableList = [queuename, region, accesskey, secretkey]
+    componentName = "Azure Secrets"
+    filename = "AzureSecretsKeyvault.yaml"
 
-    # if all the variables are empty, we're not configuring an SQS, so we can quit
+    vaultName = os.environ.get('AZURE_VAULT_NAME')
+    tenantId = os.environ.get('AZURE_VAULT_TENANT_ID')
+    clientId = os.environ.get('AZURE_VAULT_CLIENT_ID')
+
+    variableList = [vaultName, tenantId, clientId]
+
+    # if all the variables are empty, we're not configuring an EventHub, so we can quit
     if not any(variableList):
         print("No {name} connection details set".format(name=componentName))
         return
@@ -28,7 +29,7 @@ def invoke():
         print("Attempting to configure an {name} connection, but not all environment variables have been set.".format(name=componentName))
         return
 
-    # Use the custom YAML loader to resolve the inline variables
+    # Use the custom YAML loader to resolve the inline variables 
     output = Resolver.resolve(pluginDirectory + filename)
     print("{name} will be configured with:".format(name=componentName))
     print(str(output))

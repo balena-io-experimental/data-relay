@@ -2,6 +2,8 @@ import os
 import yaml
 from yamlVariableResolver import Resolver
 
+PLUGIN_TYPE = "output"
+
 def invoke():
     # these are constant
     pluginDirectory = "./plugins/"
