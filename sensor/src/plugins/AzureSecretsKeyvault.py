@@ -12,9 +12,10 @@ def invoke():
     filename = "AzureSecretsKeyvault.yaml"
 
     vaultName = os.environ.get('AZURE_VAULT_NAME')
-    subscriptionId = os.environ.get('AZURE_VAULT_SUBSCRIPTION_ID')
+    tenantId = os.environ.get('AZURE_VAULT_TENANT_ID')
+    clientId = os.environ.get('AZURE_VAULT_CLIENT_ID')
 
-    variableList = [vaultName, subscriptionId]
+    variableList = [vaultName, tenantId, clientId]
 
     # if all the variables are empty, we're not configuring an EventHub, so we can quit
     if not any(variableList):
