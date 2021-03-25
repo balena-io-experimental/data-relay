@@ -11,8 +11,8 @@ def invoke():
     componentName = "Azure Secrets"
     filename = "AzureSecretsKeyvault.yaml"
 
-    vaultName = os.environ.get('AZURE_EH_VAULT_NAME')
-    subscriptionId = os.environ.get('AZURE_EH_VAULT_SUBSCRIPTION_ID')
+    vaultName = os.environ.get('AZURE_VAULT_NAME')
+    subscriptionId = os.environ.get('AZURE_VAULT_SUBSCRIPTION_ID')
 
     variableList = [vaultName, subscriptionId]
 
@@ -25,7 +25,7 @@ def invoke():
     if not all(variableList):
         print("Attempting to configure an {name} connection, but not all environment variables have been set.".format(name=componentName))
         return
-    
+
     # Use the custom YAML loader to resolve the inline variables 
     output = Resolver.resolve(pluginDirectory + filename)
     print("{name} will be configured with:".format(name=componentName))
@@ -35,5 +35,3 @@ def invoke():
     f = open(componentDirectory + filename, 'w')
     f.write(yaml.dump(output))
     f.close()
-
-
