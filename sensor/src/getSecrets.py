@@ -19,7 +19,7 @@ variables = {
     "azureehstorageaccountkey": "AZURE_EH_STORAGE_ACCOUNT_KEY",
     "azureehcontainername": "AZURE_EH_CONTAINER_NAME",
     "azureblobstorageaccount": "AZURE_BLOB_STORAGE_ACCOUNT",
-    "azureblobstorageaccesskey": "AZURE_BLOB_STORAGE_ACCESS_KEY",
+    "azureblobstorageaccountkey": "AZURE_BLOB_STORAGE_ACCOUNT_KEY",
     "azureblobcontainername": "AZURE_BLOB_CONTAINER_NAME",
 }
 
@@ -28,12 +28,19 @@ try:
         log("Looking for {0}".format(secret_name))
         url = secrets_url + secret_name
         response = requests.get(url)
-        log(response)
         json_data = response.json()
-        log(json_data)
 
-        # DEBUG - set all variables to "test" to see whether they propagate
-        secret = "test"
-        print("export {0}={1}".format(variable_name, secret))
+        if response.status_code != 200:
+            if "message" in json_data and "StatusCode=404" in json_data["message"]:
+                # Secret not found, we do not care
+                continue
+
+            # Any other failure - log the details
+            log("Getting secrets failed with status code %d".format(response.status_code))
+            log(json_data)
+            continue
+
+        log("{0} secret found, populating {1} env variable".format(secret_name, variable_name))
+        print("export {0}={1}".format(variable_name, json_data[secret_name]))
 except Exception as e:
     log(e)
