@@ -6,7 +6,7 @@ if [ "$SECRETS" = "KEYVAULT" ];then
     daprd --components-path /app/components --app-id $1 &
     DAPR_PID=$!
     sleep 3
-    python3 ./src/getSecrets.py #generates environ variables with the secrets
+    `python3 ./src/getSecrets.py` # environment variables are applied from stdout
     kill -SIGTERM "$DAPR_PID"
     sleep 3
 fi
