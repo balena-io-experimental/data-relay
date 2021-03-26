@@ -1,9 +1,8 @@
 import os
 import sys
 import yaml
-from functools import partial
-from pluginbase import PluginBase
 from yamlVariableResolver import Resolver
+from util import get_plugin_source
 
 def invoke_plugin(plugin):
     pluginDirectory = "./plugins/"
@@ -47,11 +46,7 @@ def Configure():
         invoke_plugin_type = sys.argv[1]
 
     print("Finding cloud block plugins to run")
-    # Use PluginBase to find the plugins
-    here = os.path.abspath(os.path.dirname(__file__))
-    get_path = partial(os.path.join, here)
-    plugin_base = PluginBase(package='plugins')
-    plugin_source = plugin_base.make_plugin_source(searchpath=[get_path('plugins')])
+    plugin_source = get_plugin_source()
 
     plugin_configured = False
     # Call each plugin
