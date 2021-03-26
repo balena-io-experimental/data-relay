@@ -20,12 +20,12 @@ def invoke():
     # if all the variables are empty, we're not configuring an EventHub, so we can quit
     if not any(variableList):
         print("No {name} connection details set".format(name=componentName))
-        return
+        return False
 
     # if only some of the variables are empty, then there's a configuration issue
     if not all(variableList):
         print("Attempting to configure an {name} connection, but not all environment variables have been set.".format(name=componentName))
-        return
+        return False
 
     # Use the custom YAML loader to resolve the inline variables 
     output = Resolver.resolve(pluginDirectory + filename)
@@ -36,3 +36,5 @@ def invoke():
     f = open(componentDirectory + filename, 'w')
     f.write(yaml.dump(output))
     f.close()
+
+    return True
