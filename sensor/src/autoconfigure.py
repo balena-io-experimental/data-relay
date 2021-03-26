@@ -16,6 +16,7 @@ def Configure():
     plugin_base = PluginBase(package='plugins')
     plugin_source = plugin_base.make_plugin_source(searchpath=[get_path('plugins')])
 
+    plugin_configured = False
     # Call each plugin
     for plugin_name in plugin_source.list_plugins():
         print("Loading plugin " + plugin_name)
@@ -24,10 +25,17 @@ def Configure():
         if plugin.PLUGIN_TYPE != invoke_plugin_type:
             continue
 
-        plugin.invoke()
+        plugin_configured |= plugin.invoke()
+
+    if not plugin_configured:
+        print("No {0} plugins were configured".format(invoke_plugin_type))
+        return 1
+
+    return 0
 
 print("balenablocks/cloud")
 print("----------------------")
 print('Intelligently connecting devices to clouds')
-Configure()
+exitcode = Configure()
 print("Finished configuring cloud block")
+sys.exit(exitcode)
