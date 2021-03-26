@@ -1,49 +1,16 @@
-import os
-import yaml
-from yamlVariableResolver import Resolver
-
-PLUGIN_TYPE = "output"
-
-def invoke():
-    # these are constant
-    pluginDirectory = "./plugins/"
-    componentDirectory = "/app/components/"
-
-    # these are plugin/component specific
-    componentName = "GCP BLOB storage"
-    filename = "GcpBlobOutput.yaml"
-    bucket = os.environ.get('GCP_PUBSUB_BUCKET')
-    pubsubType = os.environ.get('GCP_PUBSUB_TYPE')
-    projectId = os.environ.get('GCP_PUBSUB_PROJECT_ID')
-    privateKeyId = os.environ.get('CP_PUBSUB_PRIVATE_KEY_ID')
-    clientEmail = os.environ.get('GCP_PUBSUB_CLIENT_EMAIL')
-    clientId = os.environ.get('GCP_PUBSUB_CLIENT_ID')
-    authUri = os.environ.get('GCP_PUBSUB_AUTH_URI')
-    tokenUri = os.environ.get('GCP_PUBSUB_TOKEN_URI')
-    authProviderCertUrl = os.environ.get('GCP_PUBSUB_AUTH_PROVIDER_X509_CERT_URL')
-    clientCertUrl = os.environ.get('GCP_PUBSUB_CLIENT_X509_CERT_URL')
-    privateKey = os.environ.get('GCP_PUBSUB_PRIVATE_KEY')
-
-    variableList = [bucket, pubsubType, projectId, privateKeyId, clientEmail, clientId, authUri, tokenUri, authProviderCertUrl, clientCertUrl, privateKey]
-
-    # if all the variables are empty, we're not configuring a GCP Cloud Storage, so we can quit
-    if not any(variableList):
-        print("No {name} connection details set".format(name=componentName))
-        return False
-
-    # if only some of the variables are empty, then there's a configuration issue
-    if not all(variableList):
-        print("Attempting to configure an {name} connection, but not all environment variables have been set.".format(name=componentName))
-        return False
-
-    # Use the custom YAML loader to resolve the inline variables 
-    output = Resolver.resolve(pluginDirectory + filename)
-    print("{name} will be configured with:".format(name=componentName))
-    print(str(output))
-
-    # write the resolved YAML to the component directory
-    f = open(componentDirectory + filename, 'w')
-    f.write(yaml.dump(output))
-    f.close()
-
-    return True
+NAME = "GCP BLOB storage"
+TYPE = "output"
+FILE = "GcpBlobOutput.yaml"
+VARS = [
+    "GCP_PUBSUB_BUCKET",
+    "GCP_PUBSUB_TYPE",
+    "GCP_PUBSUB_PROJECT_ID",
+    "GCP_PUBSUB_PRIVATE_KEY_ID",
+    "GCP_PUBSUB_CLIENT_EMAIL",
+    "GCP_PUBSUB_CLIENT_ID",
+    "GCP_PUBSUB_AUTH_URI",
+    "GCP_PUBSUB_TOKEN_URI",
+    "GCP_PUBSUB_AUTH_PROVIDER_X509_CERT_URL",
+    "GCP_PUBSUB_CLIENT_X509_CERT_URL",
+    "GCP_PUBSUB_PRIVATE_KEY",
+]
