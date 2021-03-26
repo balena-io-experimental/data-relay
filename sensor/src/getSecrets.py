@@ -2,6 +2,7 @@ import time
 import requests
 import os
 import sys
+from util import get_plugin_source
 
 
 def log(message):
@@ -12,16 +13,16 @@ def log(message):
 dapr_port = os.getenv("DAPR_HTTP_PORT", 3500)
 secrets_url = "http://localhost:{}/v1.0/secrets/keyvault/".format(dapr_port)
 
-variables = {
-    "azureehconnectionstring": "AZURE_EH_CONNECTIONSTRING",
-    "azureehconsumergroup": "AZURE_EH_CONSUMER_GROUP",
-    "azureehstorageaccount": "AZURE_EH_STORAGE_ACCOUNT",
-    "azureehstorageaccountkey": "AZURE_EH_STORAGE_ACCOUNT_KEY",
-    "azureehcontainername": "AZURE_EH_CONTAINER_NAME",
-    "azureblobstorageaccount": "AZURE_BLOB_STORAGE_ACCOUNT",
-    "azureblobstorageaccountkey": "AZURE_BLOB_STORAGE_ACCOUNT_KEY",
-    "azureblobcontainername": "AZURE_BLOB_CONTAINER_NAME",
-}
+variables = {}
+plugin_source = get_plugin_source()
+for plugin_name in plugin_source.list_plugins():
+    plugin = plugin_source.load_plugin(plugin_name)
+
+    if plugin.TYPE == "secrets":
+        continue
+
+    for var in plugin.VARS:
+        variables[var.replace("_", "-").lower()] = var
 
 try:
     for secret_name, variable_name in variables.items():
