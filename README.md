@@ -110,4 +110,18 @@ The `cloud` block has been tested with these devices:
 
 ## Data Source
 
-The nature of the data source container is specific to your application and how its generates data. The only requirement for the cloud block is to publish the application data to the MQTT broker on the device.
+The nature of the data source container is specific to your application and how its generates data. The cloud block only requires that you publish the application data to the `cloud-input` topic for the MQTT broker on the device. See a simple example below.
+
+```python
+client = mqtt.Client()
+
+while True:
+    client.connect("localhost", 1883, 60)
+
+    msgInfo = client.publish('cloud-input', str(now), 0, False)
+    if False == msgInfo.is_published():
+        msgInfo.wait_for_publish()
+
+    client.disconnect()
+    time.sleep(30)
+```
