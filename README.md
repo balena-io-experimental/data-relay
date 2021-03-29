@@ -16,14 +16,18 @@ The diagram below shows the components of a solution based on the cloud block. T
 | Cloud Service| A supported service at a cloud provider to receive the data. See the list of supported services in the section below on plugins.                                  |
 
 
-### Cloud Service Plugins
+### Cloud Service Support
 
-The cloud block uses a flexible plugin capability to allow you to specify the service you wish to receive application data. Presently the cloud block supports the services below.
+Presently the cloud block supports these services.
 
 | Type              | Services      |
 |-------------------|---------------|
 | Message Queue     | AWS SQS, Azure Event Hubs, GCP Pub/Sub |
 | Object Storage    | AWS S3, Azure Blob Storage, GCP Cloud Storage |
+
+To use a cloud service you only need to specify the actual variables  required by the service, like a connection string or a client ID. Define all of the required variables, and your data automatically is pushed to the service. See the *Environment Variables* section below for details. You also may push data to more than one cloud service at a time.
+
+Internally the cloud block uses a flexible plugin capability to match these variables to the specific cloud service requirements, as defined by the dapr utility.
 
 ## Usage
 
