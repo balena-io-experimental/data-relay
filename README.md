@@ -1,5 +1,5 @@
 # balenaBlocks/cloud #
-A balenaBlock to provide low-friction push of application data to cloud providers including Microsoft Azure, Amazon AWS and Google Cloud Platform. Also accepts data pushed *from* the cloud provider. The `cloud` block itself is a docker image based on the [dapr.io](https://dapr.io/) utility.
+The cloud block provides a low-friction push of application data to cloud providers including Microsoft Azure, Amazon AWS and Google Cloud Platform. The `cloud` block itself is a docker image based on the [dapr.io](https://dapr.io/) utility.
 
 
 ## Architecture
@@ -114,11 +114,11 @@ The nature of the data source container is specific to your application and how 
 
 ```python
 client = mqtt.Client()
-
 while True:
     client.connect("localhost", 1883, 60)
 
-    msgInfo = client.publish('cloud-input', str(now), 0, False)
+    value = getReading() # code omitted for brevity
+    msgInfo = client.publish('cloud-input', str(value), 0, False)
     if False == msgInfo.is_published():
         msgInfo.wait_for_publish()
 
