@@ -6,7 +6,7 @@ A balenaBlock to provide low-friction push of application data to cloud provider
 
 The diagram below shows the components of a solution based on the cloud block. The data source, MQTT, and cloud block run on your balena device.
 
-![Architecture](architecture.png)
+![Architecture](doc/architecture.png)
 
 |  Component   | Description                                                                                  |
 |--------------|----------------------------------------------------------------------------------------------|
@@ -25,7 +25,7 @@ The cloud block uses a flexible plugin capability to allow you to specify the se
 | Message Queue     | AWS SQS, Azure Event Hubs, GCP Pub/Sub |
 | Object Storage    | AWS S3, Azure Blob Storage, GCP Cloud Storage |
 
-## Configuration
+## Usage
 
 ### docker-compose file
 
@@ -44,7 +44,7 @@ services:
         ports:
             - "1883:1883"
         restart: always
-    # placeholder for your data source
+    # example data source; name it as you see fit
     dataSource:
         build: dataSource
         restart: always
@@ -55,19 +55,49 @@ services:
             - "mqtt"
 ```
 
-### Cloud service
+### Cloud block
 
-Each cloud service requires you to define environment variables to configure the service. The list below provides links that list the specific variables.
+You must configure the cloud block with the credentials and identifiers required to use each service, like a connection string or project ID. There are two ways to provide this configuration data:
 
-* AWS SQS
-* AWS S3
-* Azure Blob Storage
-* Azure Event Hubs
-* GCP Cloud Storage
-* [GCP Pub/Sub](doc/GcpPubsubOutputVars.md)
+   * Balena environment variables for each configuration element
+   * Secret store in the cloud that contains each element
 
+See the subsections below for each approach.
 
-*??? Mention alternative configuration via dapr native YAML file?*
+#### Environment variables
+
+With this approach you define an balena environment variable for each element of the service configuration. See this links below for details on each service.
+
+   * AWS SQS
+   * AWS S3
+   * Azure Blob Storage
+   * Azure Event Hubs
+   * GCP Cloud Storage
+   * [GCP Pub/Sub](doc/GcpPubsubOutputVars.md)
+
+For example to configure GCP Pub/Sub, define balena environment variables GCP_PUBSUB_TOPIC, GCP_PUBSUB_TYPE, etc. with the appropriate values.
+
+#### Secret store
+
+Since the configuration data is for cloud services, you may find it more convenient to store the service configuration in the cloud also. Cloud providers have developed secret stores, like Azure Key Vault, that you may use to store the service configuration.
+
+In this case you still must define some balena environment variables to access the cloud secret store itself. The cloud block then will read the required configuration elements for each cloud service from the secret store.
+
+See the list of services above in the Environment variables section for the required key name and content of each configuration element in the secret store. Also see the list of secret stores below for the balena environment variables you must define to access the store.
+
+Supported secret stores:
+
+   * [Azure Key Vault](doc/AzureKeyVaultVars.md)
+
+For example to configure Azure Event Hubs, add secrets named *azure-eh-connectionstring*, *azure-eh-consumer-group*, etc. to the Azure Key Vault. Then define balena environment variables AZURE_VAULT_NAME, AZURE_VAULT_TENANT_ID, and AZURE_VAULT_CLIENT_ID for the key vault secret store.
+
+Notice that the formatting for a secret key name is a simple transformation of the corresponding environment variable name:
+
+   * Upper case to lower case
+   * Underscore ("_") to dash ("-")
+
+So for example the secret store variable name *azure-eh-connectionstring* corresponds to the environment variable name *AZURE_EH_CONNECTIONSTRING*.
+
 
 ## Supported Devices
 
@@ -77,3 +107,7 @@ The `cloud` block has been tested with these devices:
 | ------------- | ------------- |
 | Intel NUC | ✔ |
 
+
+## Data Source
+
+The nature of the data source container is specific to your application and how its generates data. The only requirement for the cloud block is to publish the application data to the MQTT broker on the device.
