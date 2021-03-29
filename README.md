@@ -1,5 +1,5 @@
 # balenaBlocks/cloud #
-A balenaBlock to provide low-friction push of application data to cloud providers including Microsoft Azure, Amazon AWS and Google Cloud Platform. Also accepts data pushed *from* the cloud provider. The `cloud` block itself is a docker image based on the [dapr.io](https://dapr.io/) utility.
+The cloud block provides a low-friction push of application data to cloud providers including Microsoft Azure, Amazon AWS and Google Cloud Platform. The `cloud` block itself is a docker image based on the [dapr.io](https://dapr.io/) utility.
 
 
 ## Architecture
@@ -16,14 +16,18 @@ The diagram below shows the components of a solution based on the cloud block. T
 | Cloud Service| A supported service at a cloud provider to receive the data. See the list of supported services in the section below on plugins.                                  |
 
 
-### Cloud Service Plugins
+### Cloud Service Support
 
-The cloud block uses a flexible plugin capability to allow you to specify the service you wish to receive application data. Presently the cloud block supports the services below.
+Presently the cloud block supports these services.
 
 | Type              | Services      |
 |-------------------|---------------|
 | Message Queue     | AWS SQS, Azure Event Hubs, GCP Pub/Sub |
 | Object Storage    | AWS S3, Azure Blob Storage, GCP Cloud Storage |
+
+To use a cloud service you only need to specify the actual variables  required by the service, like a connection string or a client ID. Define all of the required variables, and your data automatically is pushed to the service. See the *Environment Variables* section below for details. You also may push data to more than one cloud service at a time.
+
+Internally the cloud block uses a flexible plugin capability to match these variables to the specific cloud service requirements, as defined by the dapr utility.
 
 ## Usage
 
@@ -68,11 +72,11 @@ See the subsections below for each approach.
 
 With this approach you define an balena environment variable for each element of the service configuration. See this links below for details on each service.
 
-   * AWS SQS
-   * AWS S3
-   * Azure Blob Storage
-   * Azure Event Hubs
-   * GCP Cloud Storage
+   * [AWS SQS](doc/AwsSqsOutputVars.md)
+   * [AWS S3](doc/AwsS3OutputVars.md)
+   * [Azure Blob Storage](doc/AzureBlobOutputVars.md)
+   * [Azure Event Hubs](doc/AzureEventHubOutputVars.md)
+   * [GCP Cloud Storage](doc/GcpBlobOutputVars.md)
    * [GCP Pub/Sub](doc/GcpPubsubOutputVars.md)
 
 For example to configure GCP Pub/Sub, define balena environment variables GCP_PUBSUB_TOPIC, GCP_PUBSUB_TYPE, etc. with the appropriate values.
@@ -114,11 +118,11 @@ The nature of the data source container is specific to your application and how 
 
 ```python
 client = mqtt.Client()
-
 while True:
     client.connect("localhost", 1883, 60)
 
-    msgInfo = client.publish('cloud-input', str(now), 0, False)
+    value = getReading() # code omitted for brevity
+    msgInfo = client.publish('cloud-input', str(value), 0, False)
     if False == msgInfo.is_published():
         msgInfo.wait_for_publish()
 
