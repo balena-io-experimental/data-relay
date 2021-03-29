@@ -72,11 +72,11 @@ See the subsections below for each approach.
 
 With this approach you define an balena environment variable for each element of the service configuration. See this links below for details on each service.
 
-   * AWS SQS
-   * AWS S3
-   * Azure Blob Storage
-   * Azure Event Hubs
-   * GCP Cloud Storage
+   * [AWS SQS](doc/AwsSqsOutputVars.md)
+   * [AWS S3](doc/AwsS3OutputVars.md)
+   * [Azure Blob Storage](doc/AzureBlobOutputVars.md)
+   * [Azure Event Hubs](doc/AzureEventHubOutputVars.md)
+   * [GCP Cloud Storage](doc/GcpBlobOutputVars.md)
    * [GCP Pub/Sub](doc/GcpPubsubOutputVars.md)
 
 For example to configure GCP Pub/Sub, define balena environment variables GCP_PUBSUB_TOPIC, GCP_PUBSUB_TYPE, etc. with the appropriate values.
