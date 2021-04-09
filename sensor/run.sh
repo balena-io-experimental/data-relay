@@ -17,8 +17,8 @@ then
     sleep 5
 fi
 
-# Initialize output plugins
-python3 ./src/autoconfigure.py output
+# Initialize input and out plugins
+python3 ./src/autoconfigure.py
 sleep 3
 daprd $DAPR_LOGLEVEL --components-path /app/components --app-protocol grpc --app-port 50051 --app-id $1 &
 sleep 3

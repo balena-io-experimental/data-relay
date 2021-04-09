@@ -11,9 +11,9 @@ spec:
   - name: region
     value: !ENV ${AWS_SQS_REGION}
   - name: accessKey
-    value: !ENV ${AWS_ACCESS_KEY}
+    value: !ENV ${AWS_SQS_ACCESS_KEY}
   - name: secretKey
-    value: !ENV ${AWS_SECRET_KEY}
+    value: !ENV ${AWS_SQS_SECRET_KEY}
   # Default values that could be overwritten
   - name: messageVisibilityTimeout
     value: 10
