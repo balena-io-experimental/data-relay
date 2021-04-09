@@ -9,12 +9,19 @@ def invoke_plugin(plugin):
     componentDirectory = "/app/components/"
     if plugin.TYPE == "secrets":
         componentDirectory += "secrets/"
+    
+    #run the invoke method, if the plugin has one
+    try:
+        plugin.invoke()
+    except AttributeError:
+        # don't need to do anything here
+        None
 
     variables = {var: os.getenv(var) for var in plugin.VARS}
 
     # if all the variables are empty, we're not configuring the plugin, so we can quit
     if not any(variables.values()):
-        print("No {name} connection details set".format(name=plugin.NAME))
+        print("No {name} configuration details set".format(name=plugin.NAME))
         return False
 
     # if only some of the variables are empty, then there's a configuration issue
@@ -39,35 +46,42 @@ def invoke_plugin(plugin):
 
     return True
 
-def Configure():
-    invoke_plugin_type = "output"
-    if len(sys.argv) > 1:
-        # This should use argparse
-        invoke_plugin_type = sys.argv[1]
+def Configure(invoke_plugin_types):
+    for type in invoke_plugin_types:
+        print("Finding {value} plugins to run".format(value=type))
 
-    print("Finding cloud block plugins to run")
     plugin_source = get_plugin_source()
 
     plugin_configured = False
     # Call each plugin
     for plugin_name in plugin_source.list_plugins():
-        print("Loading plugin " + plugin_name)
+       
         plugin = plugin_source.load_plugin(plugin_name)
 
-        if plugin.TYPE != invoke_plugin_type:
+        if plugin.TYPE not in invoke_plugin_types:
             continue
 
+        print("Loading plugin " + plugin_name)
         plugin_configured |= invoke_plugin(plugin)
+        # put this into state, to be used later
 
     if not plugin_configured:
-        print("No {0} plugins were configured".format(invoke_plugin_type))
+        for type in invoke_plugin_types:
+            print("No {value} plugins loaded".format(value=type))
         return 1
 
     return 0
 
-print("balenablocks/cloud")
-print("----------------------")
-print('Intelligently connecting devices to clouds')
-exitcode = Configure()
-print("Finished configuring cloud block")
+invoke_plugin_types = ["input","output"]
+if len(sys.argv) > 1:
+    # This should use argparse
+    print("balenablocks/cloud")
+    print("----------------------")
+    print('Intelligently connecting devices to clouds')
+    invoke_plugin_types = [sys.argv[1]]
+
+exitcode = Configure(invoke_plugin_types)
+
+if len(sys.argv) <= 1:
+    print("Finished configuring cloud block")
 sys.exit(exitcode)

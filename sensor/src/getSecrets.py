@@ -37,8 +37,8 @@ try:
                 continue
 
             # Any other failure - log the details
-            log("Getting secrets failed with status code %d".format(response.status_code))
-            log(json_data)
+            log("Getting secrets failed with status code {code}".format(code=response.status_code))
+            log("Response: {response}".format(response=json_data))
             continue
 
         log("{0} secret found, populating {1} env variable".format(secret_name, variable_name))

@@ -7,6 +7,6 @@ spec:
   version: v1
   metadata:
   - name: url
-    value: mqtt://localhost:1883
+    value: !ENV ${MQTT_HOST}
   - name: topic
-    value: cloud-input
+    value: !ENV ${MQTT_INPUT_TOPIC}
