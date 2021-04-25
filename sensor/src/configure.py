@@ -12,7 +12,17 @@ import yaml
 from yamlVariableResolver import Resolver
 from util import get_plugin_source
 
-def write_config(template):
+def _read_value(var_name):
+    """Read and scrub environment variable value
+
+    :return: variable value or None if not found"""
+    raw_value = os.getenv(var_name)
+    if not raw_value:
+        return None
+    return raw_value.replace("\\n", "\n")
+
+
+def write_config(plugin):
     """Writes a dapr component configuration from a provided template plugin.
 
     :return: True if successful; otherwise False"""
@@ -28,14 +38,8 @@ def write_config(template):
         # don't need to do anything here
         None
 
-    # load dictionary of expected variable names/values
-    def _read_value(var_name):
-        """Read and cleanup environment variable value"""
-        raw_value = os.getenv(var_name)
-        return raw_value.replace("\\n", "\n")
-
+    # load dictionary of variable names/values expected by template
     variables = {var: _read_value(var) for var in plugin.VARS}
-    
 
     # if all the variables are empty, we're not configuring the plugin, so we can quit
     if not any(variables.values()):
@@ -81,7 +85,7 @@ def configure(plugin_types):
         if plugin.TYPE not in plugin_types:
             continue
 
-        print("Writing config for " + plugin_name)
+        print("Writing dapr config for {}".format(plugin_name))
         plugin_configured |= write_config(plugin)
         # put this into state, to be used later
 

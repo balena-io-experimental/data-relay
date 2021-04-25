@@ -16,7 +16,7 @@ class Resolver():
             Lorem ipsum !ENV ${GCP_PUBSUB_TOPIC} sit amet
 
         the tag is "!ENV" and the name is "GCP_PUBSUB_TOPIC". If the value in 'data'
-        for this name is 'dolet', the result is:
+        for the key 'GCP_PUBSUB_TOPIC' is 'dolet', the result is:
 
             Lorem ipsum dolet sit amet
 
@@ -46,6 +46,7 @@ class Resolver():
                 full_value = value
                 for g in match:
                     full_value = full_value.replace(f'${{{g}}}', data[g])
+                #print("full_value is {}".format(full_value))
                 return full_value
             return value
 
