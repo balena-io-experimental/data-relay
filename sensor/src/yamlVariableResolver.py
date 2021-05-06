@@ -35,9 +35,8 @@ class Resolver():
             if match:
                 full_value = value
                 for g in match:
-                    full_value = full_value.replace(
-                        f'${{{g}}}', os.environ.get(g, g)
-                    )
+                    full_value = full_value.replace(f'${{{g}}}', data[g])
+                #print("full_value is {}".format(full_value))
                 return full_value
             return value
 
@@ -48,7 +47,5 @@ class Resolver():
         if path:
             with open(path) as conf_data:
                 return yaml.load(conf_data, Loader=loader)
-        elif data:
-            return yaml.load(data, Loader=loader)
         else:
-            raise ValueError('Either a path or data should be passed in. Exiting.')
+            raise ValueError('Path must be passed in. Exiting.')

@@ -4,6 +4,16 @@ import yaml
 from yamlVariableResolver import Resolver
 from util import get_plugin_source
 
+def _read_value(var_name):
+    """Read and scrub environment variable value
+
+    :return: variable value or None if not found
+    """
+    raw_value = os.getenv(var_name)
+    if not raw_value:
+        return None
+    return raw_value.replace("\\n", "\n")
+
 def invoke_plugin(plugin):
     pluginDirectory = "./plugins/"
     componentDirectory = "/app/components/"
@@ -17,7 +27,8 @@ def invoke_plugin(plugin):
         # don't need to do anything here
         None
 
-    variables = {var: os.getenv(var) for var in plugin.VARS}
+    # load dictionary of variable names/values expected by template
+    variables = {var: _read_value(var) for var in plugin.VARS}
 
     # if all the variables are empty, we're not configuring the plugin, so we can quit
     if not any(variables.values()):
@@ -36,7 +47,7 @@ def invoke_plugin(plugin):
         return False
 
     # Use the custom YAML loader to resolve the inline variables 
-    output = Resolver.resolve(pluginDirectory + plugin.FILE)
+    output = Resolver.resolve(pluginDirectory + plugin.FILE, variables)
     print("{name} will be configured with:".format(name=plugin.NAME))
     print(str(output))
 
