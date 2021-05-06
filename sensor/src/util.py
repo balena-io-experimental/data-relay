@@ -3,7 +3,9 @@ from functools import partial
 from pluginbase import PluginBase
 
 def get_plugin_source():
-    # Use PluginBase to find the plugins
+    """Creates and returns a 'plugin_source' object as defined by PluginBase,
+       which provides access plugins.
+    """
     here = os.path.abspath(os.path.dirname(__file__))
     get_path = partial(os.path.join, here)
     plugin_base = PluginBase(package='plugins')

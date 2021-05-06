@@ -1,3 +1,11 @@
+"""
+Handles configuration of cloud block to run dapr. Writes dapr component configurations
+by applying required environment variables to dapr configuration template files.
+
+See plugins/README.md for important background.
+
+Copyright 2021 balena inc.
+"""
 import os
 import sys
 import yaml
@@ -14,7 +22,12 @@ def _read_value(var_name):
         return None
     return raw_value.replace("\\n", "\n")
 
-def invoke_plugin(plugin):
+
+def write_config(plugin):
+    """Writes a dapr component configuration from a provided template plugin.
+
+    :return: True if successful; otherwise False
+    """
     pluginDirectory = "./plugins/"
     componentDirectory = "/app/components/"
     if plugin.TYPE == "secrets":
@@ -57,8 +70,12 @@ def invoke_plugin(plugin):
 
     return True
 
-def Configure(invoke_plugin_types):
-    for type in invoke_plugin_types:
+def configure(plugin_types):
+    """Write dapr component configuration files for the provided types.
+    
+    :return: 0 if at least one plugin found; otherwise 1
+    """
+    for type in plugin_types:
         print("Finding {value} plugins to run".format(value=type))
 
     plugin_source = get_plugin_source()
@@ -68,30 +85,29 @@ def Configure(invoke_plugin_types):
     for plugin_name in plugin_source.list_plugins():
        
         plugin = plugin_source.load_plugin(plugin_name)
-
-        if plugin.TYPE not in invoke_plugin_types:
+        if plugin.TYPE not in plugin_types:
             continue
 
-        print("Loading plugin " + plugin_name)
-        plugin_configured |= invoke_plugin(plugin)
+        print("Writing dapr config for {}".format(plugin_name))
+        plugin_configured |= write_config(plugin)
         # put this into state, to be used later
 
     if not plugin_configured:
-        for type in invoke_plugin_types:
+        for type in plugin_types:
             print("No {value} plugins loaded".format(value=type))
         return 1
 
     return 0
 
-invoke_plugin_types = ["input","output"]
+plugin_types = ["input","output"]
 if len(sys.argv) > 1:
     # This should use argparse
     print("balenablocks/cloud")
     print("----------------------")
     print('Intelligently connecting devices to clouds')
-    invoke_plugin_types = [sys.argv[1]]
+    plugin_types = [sys.argv[1]]
 
-exitcode = Configure(invoke_plugin_types)
+exitcode = configure(plugin_types)
 
 if len(sys.argv) <= 1:
     print("Finished configuring cloud block")
