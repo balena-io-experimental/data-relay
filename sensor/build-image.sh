@@ -25,7 +25,7 @@ function build_and_push_image () {
 function create_and_push_manifest() {
   docker manifest create $DOCKER_REPO/$BLOCK_NAME:latest --amend $DOCKER_REPO/$BLOCK_NAME:genericx86-64-ext \
      --amend $DOCKER_REPO/$BLOCK_NAME:raspberrypi4-64 --amend $DOCKER_REPO/$BLOCK_NAME:fincm3
-  docker manifest push $DOCKER_REPO/$BLOCK_NAME:latest
+  docker manifest push --purge $DOCKER_REPO/$BLOCK_NAME:latest
 }
 
 # You can pass in a repo (such as a test docker repo) or accept the default
