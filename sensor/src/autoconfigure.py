@@ -1,10 +1,33 @@
+"""
+Handles configuration of cloud block to run dapr. Writes dapr component configurations
+by applying required environment variables to dapr configuration template files.
+
+See plugins/README.md for important background.
+
+Copyright 2021 balena inc.
+"""
 import os
 import sys
 import yaml
 from yamlVariableResolver import Resolver
 from util import get_plugin_source
 
-def invoke_plugin(plugin):
+def _read_value(var_name):
+    """Read and scrub environment variable value
+
+    :return: variable value or None if not found
+    """
+    raw_value = os.getenv(var_name)
+    if not raw_value:
+        return None
+    return raw_value.replace("\\n", "\n")
+
+
+def write_config(plugin):
+    """Writes a dapr component configuration from a provided template plugin.
+
+    :return: True if successful; otherwise False
+    """
     pluginDirectory = "./plugins/"
     componentDirectory = "/app/components/"
     if plugin.TYPE == "secrets":
@@ -17,7 +40,8 @@ def invoke_plugin(plugin):
         # don't need to do anything here
         None
 
-    variables = {var: os.getenv(var) for var in plugin.VARS}
+    # load dictionary of variable names/values expected by template
+    variables = {var: _read_value(var) for var in plugin.VARS}
 
     # if all the variables are empty, we're not configuring the plugin, so we can quit
     if not any(variables.values()):
@@ -36,7 +60,7 @@ def invoke_plugin(plugin):
         return False
 
     # Use the custom YAML loader to resolve the inline variables 
-    output = Resolver.resolve(pluginDirectory + plugin.FILE)
+    output = Resolver.resolve(pluginDirectory + plugin.FILE, variables)
     print("{name} will be configured with:".format(name=plugin.NAME))
     print(str(output))
 
@@ -46,8 +70,12 @@ def invoke_plugin(plugin):
 
     return True
 
-def Configure(invoke_plugin_types):
-    for type in invoke_plugin_types:
+def configure(plugin_types):
+    """Write dapr component configuration files for the provided types.
+    
+    :return: 0 if at least one plugin found; otherwise 1
+    """
+    for type in plugin_types:
         print("Finding {value} plugins to run".format(value=type))
 
     plugin_source = get_plugin_source()
@@ -57,30 +85,29 @@ def Configure(invoke_plugin_types):
     for plugin_name in plugin_source.list_plugins():
        
         plugin = plugin_source.load_plugin(plugin_name)
-
-        if plugin.TYPE not in invoke_plugin_types:
+        if plugin.TYPE not in plugin_types:
             continue
 
-        print("Loading plugin " + plugin_name)
-        plugin_configured |= invoke_plugin(plugin)
+        print("Writing dapr config for {}".format(plugin_name))
+        plugin_configured |= write_config(plugin)
         # put this into state, to be used later
 
     if not plugin_configured:
-        for type in invoke_plugin_types:
+        for type in plugin_types:
             print("No {value} plugins loaded".format(value=type))
         return 1
 
     return 0
 
-invoke_plugin_types = ["input","output"]
+plugin_types = ["input","output"]
 if len(sys.argv) > 1:
     # This should use argparse
     print("balenablocks/cloud")
     print("----------------------")
     print('Intelligently connecting devices to clouds')
-    invoke_plugin_types = [sys.argv[1]]
+    plugin_types = [sys.argv[1]]
 
-exitcode = Configure(invoke_plugin_types)
+exitcode = configure(plugin_types)
 
 if len(sys.argv) <= 1:
     print("Finished configuring cloud block")
