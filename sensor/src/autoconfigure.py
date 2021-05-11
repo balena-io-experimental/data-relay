@@ -1,26 +1,61 @@
 """
 Handles configuration of cloud block to run dapr. Writes dapr component configurations
-by applying required environment variables to dapr configuration template files.
-
+by applying required values read from environment variables or secret store contents
+to dapr configuration template files.
 See plugins/README.md for important background.
+
+If DAPR_DEBUG environment variable is defined, enables debug logging when reading
+dapr secret store.
+
+Exits with 0 if at least one plugin found, otherwise exits with 1.
 
 Copyright 2021 balena inc.
 """
 import os
 import sys
+import traceback
 import yaml
+import getSecrets as secret_reader
 from yamlVariableResolver import Resolver
 from util import get_plugin_source
 
+# constants to identify plugin types
+PLUGIN_TYPE_SECRETS = "secrets"
+PLUGIN_TYPE_INPUT = "input"
+PLUGIN_TYPE_OUTPUT = "output"
+
+# Directory to contain dapr component configuration files
+component_directory = "/app/components/"
+
+# All variables read from environment variables or from secret stores.
+# A value is None if already queried but not found.
+all_vars = {}
+
+# True if secretReader module is available and ready to use
+has_secret_reader = False
+
+# Map of secret store name to URL segment required by dapr to lookup secrets
+secret_store_urls = {}
+secret_store_urls["Azure Secrets"] = "keyvault"
+secret_store_urls["GCP Secrets"] = "gcpsecretmanager"
+secret_store_urls["AWS Secrets"] = "awssecretsmanager"
+
 def _read_value(var_name):
-    """Read and scrub environment variable value
+    """Read and scrub value read from environment variable or secret store.
+    Environment variable value has precedence over secret store.
 
     :return: variable value or None if not found
     """
-    raw_value = os.getenv(var_name)
-    if not raw_value:
-        return None
-    return raw_value.replace("\\n", "\n")
+    value = os.getenv(var_name)
+    if value == None:
+        if has_secret_reader:
+            # secret name in form like 'gcp-topic' rather than 'GCP_TOPIC'
+            name = var_name.replace("_", "-").lower()
+            value = secret_reader.read_value(name)
+
+    if value != None:
+        value = value.replace("\\n", "\n")
+    return value
 
 
 def write_config(plugin):
@@ -29,86 +64,108 @@ def write_config(plugin):
     :return: True if successful; otherwise False
     """
     pluginDirectory = "./plugins/"
-    componentDirectory = "/app/components/"
-    if plugin.TYPE == "secrets":
-        componentDirectory += "secrets/"
-    
-    #run the invoke method, if the plugin has one
+
+    # run optional invoke() method if present
     try:
         plugin.invoke()
     except AttributeError:
-        # don't need to do anything here
-        None
+        # invoke() not found
+        pass
 
     # load dictionary of variable names/values expected by template
-    variables = {var: _read_value(var) for var in plugin.VARS}
+    var_count = len(plugin.VARS)
+    found_count = 0
+    for var in plugin.VARS:
+        if not var in all_vars:
+            all_vars[var] = _read_value(var)
+
+        if all_vars[var] != None:
+            found_count += 1
 
     # if all the variables are empty, we're not configuring the plugin, so we can quit
-    if not any(variables.values()):
+    if found_count == 0:
         print("No {name} configuration details set".format(name=plugin.NAME))
         return False
 
     # if only some of the variables are empty, then there's a configuration issue
-    if not all(variables.values()):
-        print("Attempting to configure an {name} connection, but not all environment variables have been set:".format(name=plugin.NAME))
-        for var, value in variables.items():
-            if value:
+    if found_count < var_count:
+        print("Attempting to configure {name} connection, but not all environment variables have been set:".format(name=plugin.NAME))
+        for var in plugin.VARS:
+            if all_vars[var]:
                 print("- {0} is set".format(var))
             else:
                 print("- {0} is unset".format(var))
-
         return False
 
     # Use the custom YAML loader to resolve the inline variables 
-    output = Resolver.resolve(pluginDirectory + plugin.FILE, variables)
+    output = Resolver.resolve(pluginDirectory + plugin.FILE, all_vars)
     print("{name} will be configured with:".format(name=plugin.NAME))
     print(str(output))
 
     # write the resolved YAML to the component directory
-    with open(componentDirectory + plugin.FILE, "w") as f:
+    with open(component_directory + plugin.FILE, "w") as f:
         yaml.dump(output, f)
 
     return True
 
-def configure(plugin_types):
-    """Write dapr component configuration files for the provided types.
-    
-    :return: 0 if at least one plugin found; otherwise 1
+def configure(plugin_type):
+    """Write dapr component configuration files for the provided type.
+
+    :return: List of names of configured plugins; empty if none
     """
-    for type in plugin_types:
-        print("Finding {value} plugins to run".format(value=type))
+    types = ""
+    print("Finding {} plugins to run".format(plugin_type))
 
     plugin_source = get_plugin_source()
 
-    plugin_configured = False
+    configured_plugins = []
     # Call each plugin
     for plugin_name in plugin_source.list_plugins():
        
         plugin = plugin_source.load_plugin(plugin_name)
-        if plugin.TYPE not in plugin_types:
+        if plugin.TYPE != plugin_type:
             continue
 
-        print("Writing dapr config for {}".format(plugin_name))
-        plugin_configured |= write_config(plugin)
-        # put this into state, to be used later
+        if write_config(plugin):
+            configured_plugins.append(plugin.NAME)
 
-    if not plugin_configured:
-        for type in plugin_types:
-            print("No {value} plugins loaded".format(value=type))
-        return 1
+    if not configured_plugins:
+        print("No {} plugins loaded".format(plugin_type))
 
-    return 0
+    return configured_plugins
 
-plugin_types = ["input","output"]
-if len(sys.argv) > 1:
-    # This should use argparse
-    print("balenablocks/cloud")
-    print("----------------------")
-    print('Intelligently connecting devices to clouds')
-    plugin_types = [sys.argv[1]]
 
-exitcode = configure(plugin_types)
+print("balenablocks/cloud ==> build component configurations")
+exitCode = 0
 
-if len(sys.argv) <= 1:
-    print("Finished configuring cloud block")
-sys.exit(exitcode)
+# First try to configure and open a secret store because it may hold values for
+# other components. Expect only a *single* secret store is configured.
+secret_plugins = configure(PLUGIN_TYPE_SECRETS)
+if secret_plugins:
+    if len(secret_plugins) > 1:
+        print("Using first secret store plugin: {}".format(plugin_name))
+
+    plugin_name = secret_plugins[0]
+    if plugin_name in secret_store_urls:
+        has_secret_reader = secret_reader.open(secret_store_urls[plugin_name],
+                                component_directory, bool(os.getenv("DAPR_DEBUG")))
+    else:
+        print("Can't open secret reader for store: {}".format(plugin_name))
+        exitCode = 1
+
+# Now configure input and output plugins from environment variables or secret store values.
+if exitCode == 0:
+    try:
+        count = len(configure(PLUGIN_TYPE_INPUT))
+        count += len(configure(PLUGIN_TYPE_OUTPUT))
+        if count == 0:
+            exitCode = 1
+    except Exception as e:
+        exitCode = 1
+        print("Error configuring plugins: {}".format(e))
+        traceback.print_exc(file=sys.stdout)
+    finally:
+        if has_secret_reader:
+            secret_reader.close()
+
+sys.exit(exitCode)

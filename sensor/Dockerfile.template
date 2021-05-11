@@ -14,7 +14,7 @@ ENV PATH=/root/.local/bin:$PATH
 WORKDIR /app
 COPY . .
 RUN chmod +x *.sh
-RUN mkdir -p /app/components/secrets
+RUN mkdir -p /app/components
 
 RUN install_packages wget tar libstdc++
 
