@@ -1,0 +1,5 @@
+# Component names for non-output components
+awssecretsmanager
+gcpsecretmanager
+keyvault
+mqtt-input
