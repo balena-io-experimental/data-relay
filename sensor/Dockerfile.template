@@ -1,13 +1,22 @@
-FROM balenalib/%%BALENA_MACHINE_NAME%%-python:3.8-stretch-build
+FROM balenalib/%%BALENA_MACHINE_NAME%%-alpine-python:3.8-build as build  
 
-WORKDIR /app
+RUN mkdir /install
+WORKDIR /install
 
 COPY requirements.txt /requirements.txt
-RUN pip install --upgrade pip 
+ENV PATH=/root/.local/bin:$PATH
 RUN pip3 install --user -r /requirements.txt
 
+FROM balenalib/%%BALENA_MACHINE_NAME%%-alpine-python:3.8-run 
+COPY --from=build /root/.local /root/.local
+ENV PATH=/root/.local/bin:$PATH
+
+WORKDIR /app
 COPY . .
+RUN chmod +x *.sh
 RUN mkdir -p /app/components/secrets
+
+RUN install_packages wget tar libstdc++
 
 RUN ./download.sh "%%BALENA_ARCH%%"
 
