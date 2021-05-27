@@ -1,0 +1,1 @@
+The cloud block provides a low-friction push of application data to cloud providers including Microsoft Azure, Amazon AWS and Google Cloud Platform. The cloud block itself is a docker image based on the dapr.io utility.

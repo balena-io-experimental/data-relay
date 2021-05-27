@@ -6,7 +6,7 @@ The cloud block provides a low-friction push of application data to cloud provid
 
 The diagram below shows the components of a solution based on the cloud block. The data source, MQTT, and cloud block run on your balena device.
 
-![Architecture](doc/architecture.png)
+![Architecture](docs/architecture.png)
 
 |  Component   | Description                                                                                  |
 |--------------|----------------------------------------------------------------------------------------------|
@@ -72,12 +72,12 @@ See the subsections below for each approach.
 
 With this approach you define an balena environment variable for each element of the service configuration. See this links below for details on each service.
 
-   * [AWS SQS](doc/AwsSqsOutputVars.md)
-   * [AWS S3](doc/AwsS3OutputVars.md)
-   * [Azure Blob Storage](doc/AzureBlobOutputVars.md)
-   * [Azure Event Hubs](doc/AzureEventHubOutputVars.md)
-   * [GCP Cloud Storage](doc/GcpBlobOutputVars.md)
-   * [GCP Pub/Sub](doc/GcpPubsubOutputVars.md)
+   * [AWS SQS](docs/AwsSqsOutputVars.md)
+   * [AWS S3](docs/AwsS3OutputVars.md)
+   * [Azure Blob Storage](docs/AzureBlobOutputVars.md)
+   * [Azure Event Hubs](docs/AzureEventHubOutputVars.md)
+   * [GCP Cloud Storage](docs/GcpBlobOutputVars.md)
+   * [GCP Pub/Sub](docs/GcpPubsubOutputVars.md)
 
 For example to configure GCP Pub/Sub, define balena environment variables GCP_PUBSUB_TOPIC, GCP_PUBSUB_TYPE, etc. with the appropriate values.
 
@@ -91,7 +91,7 @@ See the list of services above in the Environment variables section for the requ
 
 Supported secret stores:
 
-   * [Azure Key Vault](doc/AzureKeyVaultVars.md)
+   * [Azure Key Vault](docs/AzureKeyVaultVars.md)
 
 For example to configure Azure Event Hubs, add secrets named *azure-eh-connectionstring*, *azure-eh-consumer-group*, etc. to the Azure Key Vault. Then define balena environment variables AZURE_VAULT_NAME, AZURE_VAULT_TENANT_ID, and AZURE_VAULT_CLIENT_ID for the key vault secret store.
 
