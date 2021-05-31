@@ -1,0 +1,22 @@
+name: cloudBlock
+type: sw.block
+description: >-
+  Easily push application data generically to a cloud provider like AWS, Azure or Google Cloud Platform
+assets:
+  repository:
+    type: blob.asset
+    data:
+      url: 'https://github.com/kb2ma/cloudBlock'
+  logo:
+    type: blob.asset
+    data:
+      url: >-
+        https://raw.githubusercontent.com/kb2ma/cloudBlock/landr-dev/logo.png
+data:
+  applicationEnvironmentVariables:
+    - MQTT-INPUT: cloud-input
+  defaultDeviceType: raspberry-pi4-64
+  supportedDeviceTypes:
+    - raspberry-pi4-64
+    - intel-nuc
+version: 0.0.4
