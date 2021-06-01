@@ -1,4 +1,4 @@
-![logo](https://raw.githubusercontent.com/kb2ma/cloudBlock/landr-dev/docs/images/cloudBlock-logo.png)
+![logo](https://raw.githubusercontent.com/balena-io-playground/cloudBlock/main/docs/images/cloudBlock-logo.png)
 
 **Easily push application data generically to a cloud provider like AWS, Azure or Google Cloud Platform.**
 
@@ -17,7 +17,7 @@ Head over to our [docs](docs/) for detailed installation and usage instructions,
 
 ## Motivation
 
-![concept](https://raw.githubusercontent.com/kb2ma/cloudBlock/landr-dev/docs/images/cloud.png)
+![concept](https://raw.githubusercontent.com/balena-io-playground/cloudBlock/main/docs/images/cloud.png)
 
 Cloud providers allow you to push data, but each works differently. The cloud block provides a common, simple way to send data to the cloud.
 
