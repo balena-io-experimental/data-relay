@@ -12,19 +12,7 @@ spec:
     value: !ENV ${GCP_PUBSUB_TYPE}
   - name: project_id
     value: !ENV ${GCP_PUBSUB_PROJECT_ID}
-  - name: private_key_id
-    value: !ENV ${GCP_PUBSUB_PRIVATE_KEY_ID}
   - name: client_email
     value: !ENV ${GCP_PUBSUB_CLIENT_EMAIL}
-  - name: client_id
-    value: !ENV ${GCP_PUBSUB_CLIENT_ID}
-  - name: auth_uri
-    value: !ENV ${GCP_PUBSUB_AUTH_URI}
-  - name: token_uri
-    value: !ENV ${GCP_PUBSUB_TOKEN_URI}
-  - name: auth_provider_x509_cert_url
-    value: !ENV ${GCP_PUBSUB_AUTH_PROVIDER_X509_CERT_URL}
-  - name: client_x509_cert_url
-    value: !ENV ${GCP_PUBSUB_CLIENT_X509_CERT_URL}
   - name: private_key
     value: !ENV ${GCP_PUBSUB_PRIVATE_KEY}
