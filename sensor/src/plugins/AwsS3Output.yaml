@@ -1,7 +1,7 @@
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: blob
+  name: aws-s3
 spec:
   type: bindings.aws.s3
   version: v1

@@ -1,7 +1,7 @@
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: message-queue
+  name: aws-sqs
 spec:
   type: bindings.aws.sqs
   version: v1

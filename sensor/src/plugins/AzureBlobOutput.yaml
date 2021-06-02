@@ -1,7 +1,7 @@
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: blob
+  name: azure-blob
 spec:
   type: bindings.azure.blobstorage
   version: v1
