@@ -1,7 +1,7 @@
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: message-queue
+  name: gcp-pubsub
 spec:
   type: bindings.gcp.pubsub
   version: v1

@@ -36,9 +36,9 @@ has_secret_reader = False
 
 # Map of secret store name to URL segment required by dapr to lookup secrets
 secret_store_urls = {}
-secret_store_urls["Azure Secrets"] = "keyvault"
-secret_store_urls["GCP Secrets"] = "gcpsecretmanager"
-secret_store_urls["AWS Secrets"] = "awssecretsmanager"
+secret_store_urls["Azure Secrets"] = "azure-keyvault"
+secret_store_urls["GCP Secrets"] = "gcp-secret-manager"
+secret_store_urls["AWS Secrets"] = "aws-secrets-manager"
 
 def _read_value(var_name):
     """Read and scrub value read from environment variable or secret store.

@@ -1,7 +1,7 @@
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: blob
+  name: gcp-cloud-storage
 spec:
   type: bindings.gcp.bucket
   version: v1
