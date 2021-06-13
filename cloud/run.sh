@@ -6,7 +6,7 @@ then
 fi
 
 # Place components on tmpfs based file system so they don't remain on disk.
-# The user may already have placed components in the expected directory.
+# Copy in any components the user already has placed in the target directory.
 component_dir=/app/components
 mv $component_dir /tmp
 mkdir $component_dir

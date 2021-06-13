@@ -1,0 +1,34 @@
+version: '2.1'
+volumes:
+    sense-data:
+    cloudblockdata:
+services:
+    cloud:
+        # Local build in cloud directory required only for MS Azure Key Vault,
+        # secret store to copy in certificate file. Otherwise OK to use image.
+        #build: cloud
+        image: kb2ma/cloud
+        privileged: true
+        tty: true
+        #restart: always
+        network_mode: host
+        volumes:
+            - 'cloudblockdata:/data'
+        depends_on: 
+            - "mqtt"
+    mqtt:
+        image: eclipse-mosquitto:1.6.14
+        ports:
+            - "1883:1883"
+        restart: always
+    sensor:
+        image: balenablocks/sensor
+        privileged: true
+        labels:
+            io.balena.features.kernel-modules: '1'
+            io.balena.features.sysfs: '1'
+            io.balena.features.supervisor-api: '1'
+        expose:
+            - '7575'
+        depends_on:
+            - "mqtt"

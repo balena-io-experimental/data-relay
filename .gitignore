@@ -1,5 +1,2 @@
 __pycache__
-sensor/components/blob.yaml
-landr-dist
-meta.json
-eng.traineddata
+*.pfx
