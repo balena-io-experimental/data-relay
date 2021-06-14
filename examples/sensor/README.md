@@ -8,7 +8,7 @@ Set the environment variables below as needed.
 | MQTT_INPUT_TOPIC | **Y** | Must set to _sensors_ |
 | DAPR_DEBUG | N | Set to _1_ for debug messages in the cloud log |
 |  | **Y** | See cloud block [documentation](https://www.balena.io/docs/learn/develop/integrations/cloud-block-services/aws/) for AWS, Azure, etc. service variables |
-| | N | See sensor block [documentation](https://github.com/balenablocks/sensor#readme)|
+| | N | See sensor block [documentation](https://github.com/balenablocks/sensor#readme) for variables to set publishing interval, data format and more |
 
 
 # Output
