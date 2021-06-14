@@ -3,8 +3,8 @@ Example use of the cloud block with the [balenablocks/sensor](https://github.com
 # Configuration
 Set the environment variables below as needed.
 
-| Variable |: Required? :| Notes |
-| -------- | ----------  |------ |
+| Variable | Required? | Notes |
+| -------- | :-------: |------ |
 | MQTT_INPUT_TOPIC | **Y** | Must set to _sensors_ |
 | DAPR_DEBUG | N | Set to _1_ for debug messages in the cloud log |
 |  | **Y** | See cloud block [documentation](https://www.balena.io/docs/learn/develop/integrations/cloud-block-services/aws/) for AWS, Azure, etc. service variables |
@@ -24,4 +24,4 @@ Below is example log output for a BME280 sensor to Azure Event Hubs. Must set DA
 | File/Directory | Notes |
 | -------------- | ----- |
 | `docker-compose.yml` | standard container configuration file |
-| `cloud`| extra data required only if using Azure Key Vault secret store |
+| `cloud`| extra configuration required only if using Azure Key Vault secret store |
