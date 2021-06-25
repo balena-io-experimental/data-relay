@@ -1,6 +1,6 @@
 NAME = "AWS S3"
-TYPE = "output"
-FILE = "AwsS3Output.yaml"
+TYPE = "remote"
+FILE = "AwsS3.yaml"
 VARS = [
     "AWS_S3_BUCKET",
     "AWS_S3_REGION",

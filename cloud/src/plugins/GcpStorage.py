@@ -1,6 +1,6 @@
 NAME = "GCP Cloud storage"
-TYPE = "output"
-FILE = "GcpStorageOutput.yaml"
+TYPE = "remote"
+FILE = "GcpStorage.yaml"
 VARS = [
     "GCP_STORAGE_BUCKET",
     "GCP_STORAGE_TYPE",

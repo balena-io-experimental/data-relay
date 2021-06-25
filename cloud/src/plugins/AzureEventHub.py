@@ -1,6 +1,6 @@
 NAME = "Azure EventHub"
-TYPE = "output"
-FILE = "AzureEventHubOutput.yaml"
+TYPE = "remote"
+FILE = "AzureEventHub.yaml"
 VARS = [
     "AZURE_EH_CONNECTIONSTRING",
     "AZURE_EH_CONSUMER_GROUP",

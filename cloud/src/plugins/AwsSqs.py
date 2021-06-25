@@ -1,6 +1,6 @@
 NAME = "AWS SQS"
-TYPE = "output"
-FILE = "AwsSqsOutput.yaml"
+TYPE = "remote"
+FILE = "AwsSqs.yaml"
 VARS = [
     "AWS_SQS_QUEUE_NAME",
     "AWS_SQS_REGION",

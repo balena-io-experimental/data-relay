@@ -1,6 +1,6 @@
 NAME = "Azure BLOB storage"
-TYPE = "output"
-FILE = "AzureBlobOutput.yaml"
+TYPE = "remote"
+FILE = "AzureBlob.yaml"
 VARS = [
     "AZURE_BLOB_STORAGE_ACCOUNT",
     "AZURE_BLOB_STORAGE_ACCOUNT_KEY",
