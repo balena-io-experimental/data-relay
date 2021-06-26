@@ -1,0 +1,27 @@
+version: '2.1'
+volumes:
+    cloudblockdata:
+services:
+    cloud:
+        # Local build in cloud directory required only for MS Azure secret store,
+        # to copy in certificate file. Otherwise OK to use image.
+        #build: cloud
+        image: kb2ma/cloud
+        privileged: true
+        tty: true
+        #restart: always
+        network_mode: host
+        volumes:
+            - 'cloudblockdata:/data'
+        depends_on: 
+            - "mqtt"
+    mqtt:
+        image: eclipse-mosquitto:1.6.14
+        ports:
+            - "1883:1883"
+        restart: always
+    data_sink:
+        build: reader
+        network_mode: host
+        depends_on:
+            - "mqtt"
