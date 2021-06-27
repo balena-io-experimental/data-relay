@@ -7,10 +7,6 @@
 - **Messaging**: Send/Receive messages with the cloud
 - **Multiple cloud providers**: Send to AWS, Azure or Google Cloud.
 
-## Setup and configuration
-
-Running this project is as simple as including it in a docker compose file.
-
 ## Documentation
 
 Head over to our [docs](docs/) to see how to get started and understand how it works.
@@ -25,4 +21,4 @@ This project is in active development so if you have any feature requests or iss
 
 ## License
 
-balenaSound is free software, and may be redistributed under the terms specified in the [license](https://github.com/balenalabs/balena-sound/blob/master/LICENSE).
+cloudBlock is free software, and may be redistributed under the terms specified in the [license](https://github.com/balena-io-playground/cloudBlock/blob/main/LICENSE).
