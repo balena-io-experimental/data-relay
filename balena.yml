@@ -1,7 +1,7 @@
 name: cloudBlock
 type: sw.block
 description: >-
-  Easily push application data generically to a cloud provider like AWS, Azure or Google Cloud Platform
+  Easily read and write application data via cloud messaging or specialized services on AWS, Azure or Google Cloud Platform
 assets:
   repository:
     type: blob.asset
