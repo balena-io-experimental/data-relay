@@ -21,8 +21,8 @@ from util import get_plugin_source
 
 # constants to identify plugin types
 PLUGIN_TYPE_SECRETS = "secrets"
-PLUGIN_TYPE_INPUT = "input"
-PLUGIN_TYPE_OUTPUT = "output"
+PLUGIN_TYPE_LOCAL = "local"
+PLUGIN_TYPE_REMOTE = "remote"
 
 # Directory to contain dapr component configuration files
 component_directory = "/app/components/"
@@ -153,11 +153,11 @@ if secret_plugins:
         print("Can't open secret reader for store: {}".format(plugin_name))
         exitCode = 1
 
-# Now configure input and output plugins from environment variables or secret store values.
+# Now configure local and remote plugins from environment variables or secret store values.
 if exitCode == 0:
     try:
-        count = len(configure(PLUGIN_TYPE_INPUT))
-        count += len(configure(PLUGIN_TYPE_OUTPUT))
+        count = len(configure(PLUGIN_TYPE_LOCAL))
+        count += len(configure(PLUGIN_TYPE_REMOTE))
         if count == 0:
             exitCode = 1
     except Exception as e:

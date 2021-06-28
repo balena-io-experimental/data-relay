@@ -1,49 +1,104 @@
+"""
+Connects data flows between local interfaces and remote (cloud) interfaces
+using the configured dapr components.
+
+Copyright 2021 balena inc.
+"""
 import requests
 import os
 import json
+import traceback
 
 from cloudevents.sdk.event import v1
 from dapr.ext.grpc import App, BindingRequest
+from dapr.clients import DaprClient
 
-import json
+# remote (cloud) components, to be discovered
+remote_components = []
+# secret store components; value indicates if installed
+secret_component_map = {'aws-secrets-manager': False, 'gcp-secret-manager': False,
+                        'azure-keyvault': False}
+# local components; value indicates if installed
+local_component_map = {'local-mqtt': False}
+# topic names for local MQTT component; blank if not defined
+local_mqtt_topic_map = {'input': os.getenv('LOCAL_MQTT_INPUT_TOPIC', ''),
+                        'output': os.getenv('LOCAL_MQTT_OUTPUT_TOPIC', '')}
+
+dapr_port = os.getenv("DAPR_HTTP_PORT", 3500)
+local_publish_url = f'http://localhost:{dapr_port}/v1.0/publish/local-mqtt/{local_mqtt_topic_map["output"]}?metadata.rawPayload=true'
 
 app = App()
-outputComponents = []
-non_output_components = ['aws-secrets-manager', 'gcp-secret-manager', 'azure-keyvault', 'mqtt-input']
-daprPort = os.getenv("DAPR_HTTP_PORT", 3500)
-baseUrl = "http://localhost:{}/v1.0/bindings/".format(daprPort)
+dc = DaprClient()
 
-def findComponents():
-    """Build list of output components by excluding fixed list of non-output components."""
+def find_components():
+    """Build list of remote components from all components configured with dapr.
+    
+    :return: List of components found
+    """
+    components = []
     try:
-        response = requests.get("http://localhost:{}/v1.0/metadata".format(daprPort))
+        response = requests.get(f"http://localhost:{dapr_port}/v1.0/metadata")
         # print("components found " + str(response.content), flush=True)
-        responseJson = json.loads(response.content)
-        for component in responseJson["components"]:
-            try:
-                non_output_components.index(component["name"])
-            except ValueError:
-                outputComponents.append(component["name"])
+        response_json = json.loads(response.content)
 
+        for component in response_json["components"]:
+            name = component['name']
+            if name in local_component_map:
+                local_component_map[name] = True
+                print(f"Found local component {name}")
+            elif name in secret_component_map:
+                secret_component_map[name] = True
+                print(f"Found secret component {name}")
+            else:
+                components.append(name)
+                print(f"Found remote component {name}")
+
+        # setup incoming event/data handlers
+        if local_component_map['local-mqtt'] and local_mqtt_topic_map['input']:
+            app._servicer.register_topic('local-mqtt', local_mqtt_topic_map['input'],
+                                         local_subscribe, {'rawPayload': 'true'})
+            print(f"Registered input handler for local component local-mqtt")
+        if local_component_map['local-mqtt'] and local_mqtt_topic_map['output']:
+            for name in components:
+                app._servicer.register_binding(name, remote_binding)
+                print(f"Registered input handler for remote component {name}")
     except Exception as e:
-        print(e, flush=True)
+        print(f"Error parsing components: {e}")
+        traceback.print_exc(file=sys.stdout)
 
-def sendRequest(data):
-    """Sends data to all output components."""
+    return components
+
+def send_request(data):
+    """Sends data to all remote components."""
     try:
-        for component in outputComponents:
-            payload = { "data": data, "operation": "create" }
-            response = requests.post(baseUrl + component, json=payload)
-            print("Sending to output {output} with response {response}".format(output=component,response=response))
-
+        for component in remote_components:
+            response = dc.invoke_binding(component, 'create', json.dumps(data))
+            if response.text():
+                print(f"Sent data to remote {component} with response {response.text()}")
+            else:
+                print(f"Sent data to remote {component}")
     except Exception as e:
         print(e, flush=True)
 
-@app.binding('mqtt-input')
-def binding(request: BindingRequest):
-    print("Data received from MQTT: " + request.text(), flush=True)
-    sendRequest(request.text())
+def local_subscribe(event: v1.Event) -> None:
+    """Receives event/data from local input and forwards to remotes."""
+    data = str(event.Data(), encoding='utf-8')
+    print(f"Data received from local input: {data}")
+    send_request(data)
 
-print("balenablocks/cloud ==> run dapr and relay input to cloud")
-findComponents()
+def remote_binding(request: BindingRequest):
+    """Receives event/data from a remote component and forwards to local MQTT output.
+    """
+    data = request.text()
+    print(f"Data received from remote: {data}")
+    # DaprClient should accept publish event with rawPayload metadata on daprd v1.2.2,
+    # but the call fails. So must use HTTP request.
+    #response = dc.publish_event(pubsub_name='local-mqtt', topic_name=local_mqtt_output_topic,
+    #                            metadata=(('rawPayload', 'true')), data=request.text())
+    response = requests.post(local_publish_url, data=data)
+    print(f"Sent to local cloud-output with response {response}")
+
+
+print("balenablocks/cloud ==> run dapr and relay data to/from cloud")
+remote_components = find_components()
 app.run(50051)

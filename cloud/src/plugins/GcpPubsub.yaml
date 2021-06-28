@@ -8,6 +8,8 @@ spec:
   metadata:
   - name: topic
     value: !ENV ${GCP_PUBSUB_TOPIC}
+  - name: subscription
+    value: !ENV ${GCP_PUBSUB_SUBSCRIPTION}
   - name: type
     value: !ENV ${GCP_PUBSUB_TYPE}
   - name: project_id
