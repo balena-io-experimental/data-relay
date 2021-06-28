@@ -1,11 +1,16 @@
 # Configuration
 
-The cloud block allows you to easily send data to a cloud service like a message queue. This page describes how to configure it.
+The cloud block allows you to easily send or receive data with a cloud service like a message queue. This page describes how to configure it.
 
 ## Autoconfiguration
 Each cloud service requires the value of certain configuration and authentication variables to function. For example, suppose you wish to use Azure Event Hubs. In this case you must define a connection string (AZURE_EH_CONNECTIONSTRING), a storage account (AZURE_EH_STORAGE_ACCOUNT), and so on. However, you do not need to explicitly activate Event Hubs as a whole. Simply defining all the required environment variables is sufficient to activate use of the service.
 
 This autoconfiguration capability also means you may send data to *multiple* cloud services or cloud providers for each message received on the MQTT input queue on a device. As long as the required environment variables for a cloud service are defined, the cloud block will attempt to use it.
+
+## Send vs. Receive Data
+Some cloud services, like message queues, can push data to a device as well as accept data from the device. The cloud block makes it easy to accept data from the cloud simply by defining the expected environment variables, as shown in the diagram below. If you define LOCAL_MQTT_OUTPUT_TOPIC, then the cloud block automatically subscribes to new data from the cloud, and publishes the data to the local interface.
+
+![send-vs-receive](https://raw.githubusercontent.com/kb2ma/cloudBlock/landr-update/docs/images/send-vs-receive.png)
 
 ## Configuration via Secret Store
 
