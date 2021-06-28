@@ -26,7 +26,8 @@ For the variables below, `GCP_PUBSUB_TOPIC` is specific to the data published. H
 
 | Environment Variable Name            | Secret Store Key |Description                                 |
 |--------------------------------------|------------------|--------------------------------------------|
-|GCP_PUBSUB_TOPIC                      |gcp-pubsub-topic  |Name of topic on which to post data messages|
+|GCP_PUBSUB_TOPIC                      |gcp-pubsub-topic  |Name of topic on which to post outgoing data messages|
+|GCP_PUBSUB_SUBSCRIPTION               |gcp-pubsub-subscription  |Optional; name of topic on which to subscribe to incoming data messages.|
 |GCP_PUBSUB_TYPE                       |gcp-pubsub-type   | likely *service_account*                   |
 |GCP_PUBSUB_PROJECT_ID                 |gcp-pubsub-id     |                                            |
 |GCP_PUBSUB_CLIENT_EMAIL               |gcp-pubsub-client-email |Email address                         |
