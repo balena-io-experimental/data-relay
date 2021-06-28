@@ -22,12 +22,12 @@ This page lists the environment variables or secret store values you must define
 
 ## Google Cloud Pub/Sub
 
-For the variables below, `GCP_PUBSUB_TOPIC` is specific to the data published. However, the other variables are more generally related to the account being used. For a GCP service account these values are available for download when creating the account.
+For the variables below, `GCP_PUBSUB_TOPIC` and `GCP_PUBSUB_SUBSCRIPTION` are specific to the data published. However, the other variables are more generally related to the account being used. For a GCP service account these values are available for download when creating the account.
 
 | Environment Variable Name            | Secret Store Key |Description                                 |
 |--------------------------------------|------------------|--------------------------------------------|
-|GCP_PUBSUB_TOPIC                      |gcp-pubsub-topic  |Name of topic on which to post outgoing data messages|
-|GCP_PUBSUB_SUBSCRIPTION               |gcp-pubsub-subscription  |Optional; name of topic on which to subscribe to incoming data messages.|
+|GCP_PUBSUB_TOPIC                      |gcp-pubsub-topic  |Name of topic a client uses to publish data messages to the queue |
+|GCP_PUBSUB_SUBSCRIPTION               |gcp-pubsub-subscription  |Optional; name of topic a client uses to subscribe to messages from the queue |
 |GCP_PUBSUB_TYPE                       |gcp-pubsub-type   | likely *service_account*                   |
 |GCP_PUBSUB_PROJECT_ID                 |gcp-pubsub-id     |                                            |
 |GCP_PUBSUB_CLIENT_EMAIL               |gcp-pubsub-client-email |Email address                         |

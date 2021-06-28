@@ -10,7 +10,9 @@ This autoconfiguration capability also means you may send data to *multiple* clo
 ## Send vs. Receive Data
 Some cloud services, like message queues, can push data to a device as well as accept data from the device. The cloud block makes it easy to accept data from the cloud simply by defining the expected environment variables, as shown in the diagram below. If you define LOCAL_MQTT_OUTPUT_TOPIC, then the cloud block automatically subscribes to new data from the cloud, and publishes the data to the local interface.
 
-![send-vs-receive](https://raw.githubusercontent.com/kb2ma/cloudBlock/landr-update/docs/images/send-vs-receive.png)
+![send-vs-receive](https://raw.githubusercontent.com/balena-io-playground/cloudBlock/main/docs/images/send-vs-receive.png)
+
+See the [remote-reader example](https://github.com/balena-io-playground/cloudBlock/tree/main/examples/remote-reader), which subscribes to a cloud message queue.
 
 ## Configuration via Secret Store
 
