@@ -1,2 +1,5 @@
 __pycache__
 *.pfx
+eng.traineddata
+landr-dist/
+meta.json

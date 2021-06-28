@@ -5,7 +5,7 @@ Set the environment variables below as needed.
 
 | Variable | Required? | Notes |
 | -------- | :-------: | ----- |
-| LOCAL_MQTT_INPUT_TOPIC | **Y** | Must set to _cpu_temp_ |
+| LOCAL_MQTT_INPUT_TOPIC | **Y** | Must set to `cpu_temp` |
 | DAPR_DEBUG | N | Set to _1_ for debug messages in the cloud log |
 |  | **Y** | See cloud block [documentation](https://stupefied-johnson-ee1062.netlify.app/docs/message-queues) for AWS, Azure, etc. service variables |
 
