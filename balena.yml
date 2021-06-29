@@ -19,4 +19,4 @@ data:
   supportedDeviceTypes:
     - raspberry-pi4-64
     - intel-nuc
-version: 0.0.2
+version: 0.0.3
