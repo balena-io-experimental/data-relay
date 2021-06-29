@@ -72,7 +72,7 @@ def send_request(data):
     """Sends data to all remote components."""
     try:
         for component in remote_components:
-            response = dc.invoke_binding(component, 'create', json.dumps(data))
+            response = dc.invoke_binding(component, 'create', data)
             if response.text():
                 print(f"Sent data to remote {component} with response {response.text()}")
             else:
