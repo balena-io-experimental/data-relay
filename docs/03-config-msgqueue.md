@@ -1,5 +1,5 @@
 # Message Queues
-This page lists the environment variables or secret store values you must define to use each provider.
+A message queue supports both sending data to the queue and receiving new data from the queue. This page lists the environment variables or secret store values you must define to use each provider.
 
 ## AWS SQS
 
