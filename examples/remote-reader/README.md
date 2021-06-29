@@ -17,7 +17,8 @@ Below is example log output from AWS Simple Queue Service. Must set DAPR_DEBUG v
 25.06.21 19:21:23 (-0400)  cloud  Data received from remote: "bc8b1b0, 06/25/2021 23:12:25, 32.00"
 25.06.21 19:21:23 (-0400)  cloud  DEBU[0003] mqtt publishing topic cloud-output with data: [34 98 99 56 98 49 98 48 44 32 48 54 47 50 53 47 50 48 50 49 32 50 51 58 49 50 58 50 53 44 32 51 50 46 48 48 34]  app_id=cloudBlock instance=bc8b1b0 scope=dapr.contrib type=log ver=1.2.2
 25.06.21 19:21:23 (-0400)  data_sink  cloud-output b'"bc8b1b0, 06/25/2021 23:12:25, 32.00"'
-25.06.21 19:21:23 (-0400)  cloud  Sent to local cloud-output with response <Response [204]>```
+25.06.21 19:21:23 (-0400)  cloud  Sent to local cloud-output with response <Response [204]>
+```
 
 # Contents
 
