@@ -1,0 +1,24 @@
+version: '2.1'
+volumes:
+    cloudblockdata:
+services:
+    cloud:
+        image: kb2ma/cloud
+        privileged: true
+        tty: true
+        restart: always
+        network_mode: host
+        volumes:
+            - 'cloudblockdata:/data'
+        depends_on: 
+            - "mqtt"
+    mqtt:
+        image: eclipse-mosquitto:1.6.14
+        ports:
+            - "1883:1883"
+        restart: always
+    data_source:
+        build: cputemp
+        privileged: true
+        depends_on:
+            - "mqtt"
