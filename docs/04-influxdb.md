@@ -25,7 +25,7 @@ For example,
 
 A tags attribute is optional. The values attribute includes the actual data values. See InfluxDB [line protocol](https://docs.influxdata.com/influxdb/cloud/reference/syntax/line-protocol) for more details.
 
-| Element          |Req?| Notes          |
+| Element          |Required?| Notes          |
 |------------------|:--:|----------------|
 | measurement-name | Y  | Name of measurement|
 | tkey          | N  | Key for tag        |
