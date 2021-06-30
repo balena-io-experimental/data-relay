@@ -6,12 +6,12 @@ Set the environment variables below as needed.
 | Variable | Required? | Notes |
 | -------- | :-------: | ----- |
 | LOCAL_MQTT_INPUT_TOPIC | **Y** | Must set to `cpu_temp` |
-| DAPR_DEBUG | N | Set to _1_ for debug messages in the cloud log |
-|  | **Y** | See cloud block [documentation](https://stupefied-johnson-ee1062.netlify.app/docs/message-queues) for AWS, Azure, etc. service variables |
+| *InfluxDB variables* | **Y** | See plugin [documentation](https://stupefied-johnson-ee1062.netlify.app/docs/influx-db) for specifics |
+| DAPR_DEBUG | N | Set to `1` for debug messages in the cloud log |
 
 
 # Input and Output
-Data from the termperature data source is a JSON object in the form described on the InfluxDB plugin [documentation page]([documentation](https://stupefied-johnson-ee1062.netlify.app/docs/influxdb).
+Data from the termperature data source is a JSON object in the form described on the InfluxDB plugin [documentation page](https://stupefied-johnson-ee1062.netlify.app/docs/influxdb).
 
 
 Below is example log output to an InfluxDB instance. Must set DAPR_DEBUG variable to receive this output.
