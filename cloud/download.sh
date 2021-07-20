@@ -1,7 +1,7 @@
 #!/bin/sh
 
 outfile="/tmp/daprd.tar.gz"
-download_base="https://github.com/dapr/dapr/releases/download/v1.2.2/"
+download_base="https://github.com/kb2ma/dapr/releases/download/v1.2.2-fix_sentinel/"
 
 case $1 in
    aarch64) package_file="daprd_linux_arm64.tar.gz"
