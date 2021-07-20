@@ -1,26 +1,67 @@
-FROM balenalib/%%BALENA_MACHINE_NAME%%-alpine-python:3.8-build as build  
+# This Dockerfile uses a two-stage setup, whith the final image based on Busybox.
+# This approach reduces image size and allows use of Debian packages for their
+# basis on standard libc for reliability.
 
-RUN mkdir /install
-WORKDIR /install
+# Must use v3.7 because at time of writing because v3.8 balenalib images
+# actually contain Python v3.7. However, pip (used below) thinks it should
+# download v3.8 packages.
+FROM balenalib/%%BALENA_MACHINE_NAME%%-debian-python:3.7 as builder
 
-COPY requirements.txt /requirements.txt
-ENV PATH=/root/.local/bin:$PATH
-RUN pip3 install --user -r /requirements.txt
+WORKDIR /usr/src/app
 
-FROM balenalib/%%BALENA_MACHINE_NAME%%-alpine-python:3.8-run 
-COPY --from=build /root/.local /root/.local
-ENV PATH=/root/.local/bin:$PATH
+# Download required Debian Python packages. May need build-essential package
+# to compile Python wheels.
+# See https://ostechnix.com/download-packages-dependencies-locally-ubuntu/
+# for background on this technique.
 
+RUN mkdir -p /usr/src/debian-rootfs
+RUN install_packages apt-rdepends build-essential
+
+# libstdc++6 needed by grpc; ca-certificates required to generate x509 certificates
+RUN apt-get update && \
+      apt-get download \      
+      $(apt-rdepends python3  | grep -v "^ " | sed 's/debconf-2.0/debconf/g') \
+      $(apt-rdepends libstdc++6  | grep -v "^ " | sed 's/debconf-2.0/debconf/g') \
+      $(apt-rdepends ca-certificates  | grep -v "^ " | sed 's/debconf-2.0/debconf/g')
+
+RUN for pkg in *.deb; \
+      do dpkg-deb -x $pkg /usr/src/debian-rootfs; \
+      echo $pkg; \
+      done
+
+# The runtime image will include the same certificates as this build image.
+# So we can just reuse this conf file rather than use dpkg-reconfigure to
+# rebuild it.
+RUN cp /etc/ca-certificates.conf /usr/src/debian-rootfs/etc
+
+# Install required packages from pip
+WORKDIR /usr/src/app
+COPY requirements.txt .
+RUN pip3 install -t /usr/src/python-packages -r requirements.txt
+
+
+# Build final image
+FROM busybox:stable
+
+# Copy Python environment and packages from first stage.
+COPY --from=builder /usr/src/debian-rootfs ./
+COPY --from=builder /usr/src/python-packages/ /usr/src/python-packages/
+# Create certificates; normally run by Debian when package installed
+RUN /usr/sbin/update-ca-certificates
+
+# Setup app
 WORKDIR /app
-COPY . .
-RUN chmod +x *.sh
 RUN mkdir -p /app/components
 
-RUN install_packages wget tar libstdc++
+COPY src src
+COPY download.sh .
+COPY run.sh .
+RUN chmod +x *.sh
 
+# Download daprd executable
 RUN ./download.sh "%%BALENA_ARCH%%"
 
 ENV PATH /app:$PATH
+ENV PYTHONPATH /usr/src/python-packages:$PYTHONPATH
 
-CMD ["/bin/bash", "run.sh", "cloudBlock"]
-
+CMD ["sh", "run.sh", "cloudBlock"]
