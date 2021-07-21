@@ -6,6 +6,7 @@ Copyright 2021 balena inc.
 """
 import requests
 import os
+import sys
 import json
 import traceback
 
