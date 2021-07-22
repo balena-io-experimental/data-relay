@@ -1,4 +1,8 @@
-#!/bin/bash
+#!/bin/sh
+#
+# Parameters:
+#   1 -- Application ID for dapr
+#   2 -- Seconds to delay start
 
 if [ "x$DAPR_DEBUG" != "x" ]
 then
@@ -13,6 +17,11 @@ mkdir $component_dir
 mount -t tmpfs -o mode=711 tmpfs $component_dir
 mv /tmp/components/* $component_dir
 rm -rf /tmp/components
+
+# Allow time for networking and MQTT to stabilize.
+echo "Wait $2 seconds before start"
+sleep $2
+echo "Starting..."
 
 # Initialize dapr services from plugins
 python3 ./src/autoconfigure.py
