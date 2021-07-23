@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-BLOCK_NAME="cloud"
+BLOCK_NAME="data-relay"
 
 function build_and_push_image () {
   local DOCKER_REPO=$1
@@ -30,7 +30,7 @@ function create_and_push_manifest() {
 
 # You can pass in a repo (such as a test docker repo) or accept the default
 DOCKER_REPO=${1:-balenablocks}
-build_and_push_image $DOCKER_REPO "genericx86-64-ext" "linux/amd64" "amd64"
+#build_and_push_image $DOCKER_REPO "genericx86-64-ext" "linux/amd64" "amd64"
 build_and_push_image $DOCKER_REPO "raspberrypi4-64" "linux/arm64" "aarch64"
 build_and_push_image $DOCKER_REPO "fincm3" "linux/arm/v7" "armv7hf"
 

@@ -100,6 +100,6 @@ def remote_binding(request: BindingRequest):
     print(f"Sent to local cloud-output with response {response}")
 
 
-print("balenablocks/cloud ==> run dapr and relay data to/from cloud")
+print("Data Relay block ==> run dapr and relay data to/from cloud")
 remote_components = find_components()
 app.run(50051)

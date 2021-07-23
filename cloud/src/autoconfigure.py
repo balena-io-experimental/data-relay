@@ -1,5 +1,5 @@
 """
-Handles configuration of cloud block to run dapr. Writes dapr component configurations
+Handles configuration of data relay block to run dapr. Writes dapr component configurations
 by applying required values read from environment variables or secret store contents
 to dapr configuration template files.
 See plugins/README.md for important background.
@@ -135,7 +135,7 @@ def configure(plugin_type):
     return configured_plugins
 
 
-print("balenablocks/cloud ==> build component configurations")
+print("Data Relay block ==> build component configurations")
 exitCode = 0
 
 # First try to configure and open a secret store because it may hold values for

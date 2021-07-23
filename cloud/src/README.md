@@ -1,6 +1,6 @@
 # dapr Component Plugins
 
-The cloud block uses the [PluginBase](http://pluginbase.pocoo.org/) mechanism to identify and configure dapr components. The configuration program finds the expected variable names coded in each plugin and writes a dapr configuration file with the user supplied variable values.
+The Data Relay block uses the [PluginBase](http://pluginbase.pocoo.org/) mechanism to identify and configure dapr components. The configuration program finds the expected variable names coded in each plugin and writes a dapr configuration file with the user supplied variable values.
 
 Plugin files must be added in the `plugins` directory. There are two files for each plugin: the `.py` plugin file itself, and a corresponding template `.yaml` file.
 
