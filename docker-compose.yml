@@ -1,8 +1,8 @@
 version: '2.1'
 volumes:
 services:
-    cloud:
-        build: phildwilson/cloud
+    data_relay:
+        build: kb2ma/data-relay
         privileged: true
         restart: always
         network_mode: host

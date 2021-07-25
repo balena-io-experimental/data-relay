@@ -1,15 +1,11 @@
 version: '2.1'
-volumes:
-    cloudblockdata:
 services:
-    cloud:
-        image: kb2ma/cloud
+    data_relay:
+        image: kb2ma/data-relay
         privileged: true
         tty: true
         restart: always
         network_mode: host
-        volumes:
-            - 'cloudblockdata:/data'
         depends_on: 
             - "mqtt"
     mqtt:
@@ -20,5 +16,6 @@ services:
     data_source:
         build: cputemp
         privileged: true
+        restart: always
         depends_on:
             - "mqtt"

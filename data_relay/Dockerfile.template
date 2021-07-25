@@ -64,4 +64,4 @@ RUN ./download.sh "%%BALENA_ARCH%%"
 ENV PATH /app:$PATH
 ENV PYTHONPATH /usr/src/python-packages:$PYTHONPATH
 
-CMD ["sh", "run.sh", "cloudBlock", "30"]
+CMD ["sh", "run.sh", "data_relay_block", "30"]

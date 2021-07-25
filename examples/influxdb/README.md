@@ -1,4 +1,4 @@
-Uses the cloud block to push CPU temperature data to an InfluxDB time series database in the cloud. Outputs temperature reading every 30 seconds.
+Uses the Data Relay block to push CPU temperature data to an InfluxDB time series database in the cloud. Outputs temperature reading every 30 seconds.
 
 # Configuration
 Set the environment variables below as needed.
@@ -7,19 +7,15 @@ Set the environment variables below as needed.
 | -------- | :-------: | ----- |
 | LOCAL_MQTT_INPUT_TOPIC | **Y** | Must set to `cpu_temp` |
 | *InfluxDB variables* | **Y** | See plugin [documentation](https://stupefied-johnson-ee1062.netlify.app/docs/influx-db) for specifics |
-| DAPR_DEBUG | N | Set to `1` for debug messages in the cloud log |
+| DAPR_DEBUG | N | Set to `1` for debug messages in the data_relay log |
 
 
 # Input and Output
 Data from the termperature data source is a JSON object in the form described on the InfluxDB plugin [documentation page](https://stupefied-johnson-ee1062.netlify.app/docs/influxdb).
 
-
-Below is example log output to an InfluxDB instance. Must set DAPR_DEBUG variable to receive this output.
-
-
 ```
-29.06.21 10:32:54 (-0400)  cloud  Data received from local input: { "measurement": "cpu_temp", "tags":"device=bc8b1b0", "values": "temp=32.0" }
-29.06.21 10:32:54 (-0400)  cloud  Sent data to remote influxdb
+29.06.21 10:32:54 (-0400)  data_relay  Data received from local input: { "measurement": "cpu_temp", "tags":"device=bc8b1b0", "values": "temp=32.0" }
+29.06.21 10:32:54 (-0400)  data_relay  Sent data to remote influxdb
 ```
 
 # Contents

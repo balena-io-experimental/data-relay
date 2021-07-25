@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-BLOCK_NAME="cloud"
+BLOCK_NAME="data-relay"
 
 function build_and_push_image () {
   local DOCKER_REPO=$1
