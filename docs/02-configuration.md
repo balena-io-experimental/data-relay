@@ -10,9 +10,9 @@ This autoconfiguration capability also means you may send data to *multiple* clo
 ## Send vs. Receive Data
 Some cloud services, like message queues, can push data to a device as well as accept data from the device. The cloud block makes it easy to accept data from the cloud simply by defining the expected environment variables, as shown in the diagram below. If you define LOCAL_MQTT_OUTPUT_TOPIC, then the cloud block automatically subscribes to new data from the cloud, and publishes the data to the local interface.
 
-![send-vs-receive](https://raw.githubusercontent.com/balena-io-playground/cloudBlock/main/docs/images/send-vs-receive.png)
+![send-vs-receive](https://raw.githubusercontent.com/kb2ma/data-relay/landr_for_data_relay/docs/images/send-vs-receive.png)
 
-See the [remote-reader example](https://github.com/balena-io-playground/cloudBlock/tree/main/examples/remote-reader), which subscribes to a cloud message queue.
+See the [remote-reader example](https://github.com/kb2ma/data-relay/tree/landr_for_data_relay/examples/remote-reader), which subscribes to a cloud message queue.
 
 ## Configuration via Secret Store
 
@@ -22,7 +22,7 @@ In addition a security best practice is to periodically rotate secret values jus
 
 The diagram below shows the steps to setup and run the cloud block. The cloud block includes a Configurator that initially reads *both* environment variables and secret values from a secret store. Next the configurator connects to the cloud data service with the required service and authentication values. Then the block is ready to push your application data to the cloud service.
 
-![configuration](https://raw.githubusercontent.com/balena-io-playground/cloudBlock/main/docs/images/configuration.png)
+![configuration](https://raw.githubusercontent.com/kb2ma/data-relay/landr_for_data_relay/docs/images/configuration.png)
 
 A secret store itself also requires some setup and authentication values to allow access to its secrets. These values *must* be provided as balena Environment Variables.
 

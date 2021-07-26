@@ -1,4 +1,4 @@
-![logo](https://raw.githubusercontent.com/balena-io-playground/cloudBlock/main/docs/images/cloudBlock-logo.png)
+![logo](https://raw.githubusercontent.com/kb2ma/data-relay/landr_for_data_relay/docs/images/cloudBlock-logo.png)
 
 **Easily read and write application data via cloud messaging or specialized services on a major cloud provider or on premises.**
 
@@ -14,7 +14,7 @@ Head over to our [docs](docs/) to see how to get started and understand how it w
 
 ## Motivation
 
-![concept](https://raw.githubusercontent.com/balena-io-playground/cloudBlock/main/docs/images/cloud.png)
+![concept](https://raw.githubusercontent.com/kb2ma/data-relay/landr_for_data_relay/docs/images/cloud.png)
 
 Cloud providers include a variety of services to consume and provide application data, but each works differently. The cloud block provides a common, simple way to exchange application data with the cloud.
 
@@ -22,4 +22,4 @@ This project is in active development so if you have any feature requests or iss
 
 ## License
 
-cloudBlock is free software, and may be redistributed under the terms specified in the [license](https://github.com/balena-io-playground/cloudBlock/blob/main/LICENSE).
+cloudBlock is free software, and may be redistributed under the terms specified in the [license](https://github.com/kb2ma/data-relay/blob/landr_for_data_relay/LICENSE).

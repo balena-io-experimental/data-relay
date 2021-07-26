@@ -2,7 +2,7 @@
 
 The diagram below shows the components of a solution based on the cloud block. The diagram includes some components on the development roadmap that have not yet been implemented.
 
-![Architecture](https://raw.githubusercontent.com/balena-io-playground/cloudBlock/main/docs/images/architecture.png)
+![Architecture](https://raw.githubusercontent.com/kb2ma/data-relay/landr_for_data_relay/docs/images/architecture.png)
 
 |  Component   | Description                                                                                  |
 |--------------|----------------------------------------------------------------------------------------------|

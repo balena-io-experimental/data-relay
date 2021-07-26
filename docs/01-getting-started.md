@@ -1,7 +1,7 @@
 # Getting Started
 This page provides a simple example use of the cloud block to help you get started. The diagram below shows how the cloud block forwards data to a cloud messaging service. On the left is a balena device with three containers, where a data source publishes data to MQTT on some input topic to which the cloud block subscribes on its local interface. The cloud block then applies the user supplied configuration to forward the data out the remote interface to the provider's message queue service -- whether it's AWS SQS, Azure Event Hubs, or Google Pub/Sub.
 
-![message-app](https://raw.githubusercontent.com/balena-io-playground/cloudBlock/main/docs/images/message-app.png)
+![message-app](https://raw.githubusercontent.com/kb2ma/data-relay/landr_for_data_relay/docs/images/message-app.png)
 
 Follow these steps to implement the data flow in the diagram.
 
@@ -16,9 +16,9 @@ We send these readings to AWS Simple Queue Service (SQS) as JSON data messages. 
 
 ## Define device services
 
-As shown in the diagram above, our goal is to push data to a source topic on an MQTT broker on the balena device. We then wire the cloud block to subscribe to the source topic. See the [example application](https://github.com/balena-io-playground/cloudBlock/tree/main/examples/cputemp) for the CPU temperature reader that does just that.
+As shown in the diagram above, our goal is to push data to a source topic on an MQTT broker on the balena device. We then wire the cloud block to subscribe to the source topic. See the [example application](https://github.com/kb2ma/data-relay/tree/landr_for_data_relay/examples/cputemp) for the CPU temperature reader that does just that.
 
-As shown in the [docker-compose.yml](https://github.com/balena-io-playground/cloudBlock/blob/main/examples/cputemp/docker-compose.yml) for our example application, you must define three services, also shown in the table below.
+As shown in the [docker-compose.yml](https://github.com/kb2ma/data-relay/blob/landr_for_data_relay/examples/cputemp/docker-compose.yml) for our example application, you must define three services, also shown in the table below.
 
 | Service    | Notes                                                                                                                                                       |
 |------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -29,7 +29,7 @@ As shown in the [docker-compose.yml](https://github.com/balena-io-playground/clo
 Later, you will push these service definitions to balena cloud. Of course you may wish to push the services locally during development, as described in the balena Develop Locally instructions.
 
 ### Data source topic
-For our example application, [data_source/main.py](https://github.com/balena-io-playground/cloudBlock/blob/main/examples/cputemp/cputemp/main.py) takes a temperature reading every 30 seconds, and publishes the reading to the *cpu_temp* MQTT topic. We must adapt the cloud block to subscribe to the *cpu_temp* topic used by the data source. By default the cloud block subscribes to the topic *cloud-input*. The default may be overridden by defining an environment variable, as shown in the next section.
+For our example application, [data_source/main.py](https://github.com/kb2ma/data-relay/blob/landr_for_data_relay/examples/cputemp/cputemp/main.py) takes a temperature reading every 30 seconds, and publishes the reading to the *cpu_temp* MQTT topic. We must adapt the cloud block to subscribe to the *cpu_temp* topic used by the data source. By default the cloud block subscribes to the topic *cloud-input*. The default may be overridden by defining an environment variable, as shown in the next section.
 
 ## Create application
 From your balenaCloud account, create a Microservices or Starter application as described in the balena [Getting Started](https://www.balena.io/docs/learn/getting-started/raspberrypi3/nodejs/) instructions. Next, you must define environment variables for the application that configure the cloud block, as described here. The example here uses the AWS Simple Queue Service. To use the Azure or Google Cloud message queues, see the [Message Queues](message-queues) setup page.
@@ -61,4 +61,4 @@ Once you have defined the application, you may push the service definitions crea
 
 Finally, provision a device with the application you created! When the application runs with the DAPR_DEBUG variable defined, the log  shows data being pushed to the cloud, like below:
 
-![cputemp-log](https://raw.githubusercontent.com/balena-io-playground/cloudBlock/main/docs/images/cputemp-log.png)
+![cputemp-log](https://raw.githubusercontent.com/kb2ma/data-relay/landr_for_data_relay/docs/images/cputemp-log.png)
