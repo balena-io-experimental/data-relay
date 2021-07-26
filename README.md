@@ -1,4 +1,4 @@
-![logo](https://raw.githubusercontent.com/kb2ma/data-relay/landr_for_data_relay/docs/images/cloudBlock-logo.png)
+![logo](https://raw.githubusercontent.com/kb2ma/data-relay/landr_for_data_relay/logo.png)
 
 **Easily read and write application data via cloud messaging or specialized services on a major cloud provider or on premises.**
 
