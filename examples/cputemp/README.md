@@ -24,6 +24,6 @@ Below is example log output to GCP Pub/Sub.
 | -------------- | ----- |
 | `docker-compose.yml` | standard container configuration file |
 | `cputemp` | app to generate CPU temperature data |
-| `cloud`| extra configuration required only if using Azure Key Vault secret store |
+| `data_relay`| extra configuration required only if using Azure Key Vault secret store |
 
 
