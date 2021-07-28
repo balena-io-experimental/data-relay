@@ -1,8 +1,8 @@
 version: '2.1'
 services:
     data_relay:
-        # Local build in data_relay directory required only for MS Azure secret store,
-        # to copy in certificate file. Otherwise OK to use image.
+        # Local build in data_relay directory required only for MS Azure Key Vault
+        # secret store to copy in certificate file. Otherwise OK to use image.
         #build: data_relay
         image: kb2ma/data-relay
         privileged: true

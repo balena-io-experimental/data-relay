@@ -1,4 +1,4 @@
-FROM kb2ma/cloud
+FROM kb2ma/data-relay
 
 # Copy in Azure KeyVault certificate file
 COPY *.pfx /app/components/azure-vault-cert.pfx
