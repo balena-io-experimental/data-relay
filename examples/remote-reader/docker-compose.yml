@@ -1,18 +1,14 @@
 version: '2.1'
-volumes:
-    cloudblockdata:
 services:
-    cloud:
-        # Local build in cloud directory required only for MS Azure secret store,
+    data_relay:
+        # Local build in data_relay directory required only for MS Azure secret store,
         # to copy in certificate file. Otherwise OK to use image.
-        #build: cloud
-        image: kb2ma/cloud
+        #build: data_relay
+        image: kb2ma/data-relay
         privileged: true
         tty: true
-        #restart: always
+        restart: always
         network_mode: host
-        volumes:
-            - 'cloudblockdata:/data'
         depends_on: 
             - "mqtt"
     mqtt:
@@ -22,6 +18,7 @@ services:
         restart: always
     data_sink:
         build: reader
+        restart: always
         network_mode: host
         depends_on:
             - "mqtt"

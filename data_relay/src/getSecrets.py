@@ -34,7 +34,7 @@ def open(url_name, component_directory, is_debug_logging):
     dapr_port = os.getenv("DAPR_HTTP_PORT", 3500)
     secrets_url = "http://localhost:{}/v1.0/secrets/{}/".format(dapr_port, url_name)
 
-    args = ['daprd', '--components-path', component_directory, '--app-id', 'cloudBlock']
+    args = ['daprd', '--components-path', component_directory, '--app-id', 'data_relay_block']
     if is_debug_logging:
         args.extend(['--log-level', 'debug'])
     print("Starting daprd process")
