@@ -10,9 +10,9 @@ This autoconfiguration capability also means you may send data to *multiple* clo
 ## Send vs. Receive Data
 Some cloud services, like message queues, can push data to a device as well as accept data from the device. The Data Relay block makes it easy to accept data from the cloud simply by defining the expected application variables, as shown in the diagram below. If you define `LOCAL_MQTT_OUTPUT_TOPIC`, then the Data Relay block automatically subscribes to new data from the cloud, and publishes the data to the local interface.
 
-![send-vs-receive](https://raw.githubusercontent.com/kb2ma/data-relay/landr_for_data_relay/docs/images/send-vs-receive.png)
+![send-vs-receive](https://raw.githubusercontent.com/balena-io-playground/data-relay/main/docs/images/send-vs-receive.png)
 
-See the [remote-reader](https://github.com/kb2ma/data-relay/tree/landr_for_data_relay/examples/remote-reader) example, which subscribes to a cloud message queue.
+See the [remote-reader](https://github.com/balena-io-playground/data-relay/tree/main/examples/remote-reader) example, which subscribes to a cloud message queue.
 
 ## Configuration via Secret Store
 
@@ -22,7 +22,7 @@ In addition a security best practice is to periodically rotate secret values jus
 
 The diagram below shows the steps to setup and run the Data Relay block. The Data Relay block includes a Configurator that initially reads *both* application variables and secret values from a secret store. Next the configurator connects to the cloud data service with the required service and authentication values. Then the block is ready to push your application data to the cloud service.
 
-![configuration](https://raw.githubusercontent.com/kb2ma/data-relay/landr_for_data_relay/docs/images/configuration.png)
+![configuration](https://raw.githubusercontent.com/balena-io-playground/data-relay/main/docs/images/configuration.png)
 
 A secret store itself also requires some setup and authentication values to allow access to its secrets. These values *must* be provided as balena application Variables.
 
@@ -49,7 +49,7 @@ When actually adding secrets, add them simply as Plaintext -- no separate key an
 It is straightforward to set up Azure Key Vault from the Azure CLI. See the CLI [installation instructions](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest). Dapr provides useful [setup instructions](https://docs.dapr.io/reference/components-reference/supported-secret-stores/azure-keyvault/#setup-key-vault-and-service-principal) for Key Vault.
 
 You also must add the certificate file to the 
-data_relay container by building a custom container. See the [cputemp example](https://github.com/kb2ma/data-relay/tree/landr_for_data_relay/examples/cputemp) Docker Compose file and data_relay directory for an example.
+data_relay container by building a custom container. See the [cputemp example](https://github.com/balena-io-playground/data-relay/tree/main/examples/cputemp) Docker Compose file and data_relay directory for an example.
 
 ### GCP Secret Manager setup
 
