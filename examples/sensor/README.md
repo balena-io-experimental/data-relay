@@ -24,4 +24,4 @@ Below is example log output for a BME280 sensor to Azure Event Hubs.
 | File/Directory | Notes |
 | -------------- | ----- |
 | `docker-compose.yml` | standard container configuration file |
-| `cloud`| extra configuration required only if using Azure Key Vault secret store |
+| `data_relay`| extra configuration required only if using Azure Key Vault secret store |

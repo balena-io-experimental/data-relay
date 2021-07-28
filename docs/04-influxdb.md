@@ -2,7 +2,7 @@
 The InfluxDB plugin sends data to the InfluxDB database. This page lists the environment variables you must define, and also describes the required format for incoming data.
 
 ## Environment variables
-If you use InfluxDB Cloud, see the *Write data* [documentation](https://docs.influxdata.com/influxdb/cloud/write-data/#what-youll-need) for how to find the value for these variables.
+If you use InfluxDB Cloud, see the [*Write data*](https://docs.influxdata.com/influxdb/cloud/write-data/#what-youll-need) documentation for how to find the value for these variables.
 
 | Environment Variable Name | Secret Store Key | Description |
 |---------------------------|------------------|-------------|
