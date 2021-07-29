@@ -8,7 +8,7 @@ Each cloud service requires the value of certain configuration and authenticatio
 This autoconfiguration capability also means you may send data to *multiple* cloud services or cloud providers for each message received on the MQTT input queue on a device. As long as the required environment variables for a cloud service are defined, the Data Relay block will attempt to use it.
 
 ## Send vs. Receive Data
-Some cloud services, like message queues, can push data to a device as well as accept data from the device. The Data Relay block makes it easy to accept data from the cloud simply by defining the expected application variables, as shown in the diagram below. If you define `LOCAL_MQTT_OUTPUT_TOPIC`, then the Data Relay block automatically subscribes to new data from the cloud, and publishes the data to the local interface.
+Some cloud services, like message queues, allow you to receive data from them as well as send data to them. The Data Relay block makes it easy to receive data from the cloud simply by defining application variables, as shown in the diagram below. If you define `RELAY_IN_TOPIC`, then the Data Relay block automatically subscribes to new data from the cloud, and publishes the data internally to MQTT on the device.
 
 ![send-vs-receive](https://raw.githubusercontent.com/balena-io-playground/data-relay/main/docs/images/send-vs-receive.png)
 

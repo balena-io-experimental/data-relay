@@ -37,7 +37,7 @@ From your balenaCloud account, create a Microservices or Starter application as 
 
 | Variable         | Notes                                                                             |
 |------------------|-----------------------------------------------------------------------------------|
-|AWS_SQS_QUEUE_NAME|Name of the queue. Identified as `cloud-topic` in the architecture diagram above.|
+|AWS_SQS_QUEUE_NAME|Name of the SQS queue to receive data messages.|
 |AWS_SQS_REGION    |AWS region in which the queue is defined                                           |
 |AWS_SQS_ACCESS_KEY|IAM access key ID                                                                  |
 |AWS_SQS_SECRET_KEY|IAM secret key for access key                                                      |
@@ -51,7 +51,7 @@ These variables configure the Data Relay block on the balena device. They do not
 
 | Variable              | Required? | Notes                                                                                                                                             |
 |----------------------- | ----------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
-|LOCAL_MQTT_INPUT_TOPIC | **Y** |MQTT topic to which the Data Relay block subscribes for messages from the data source. Identified as *producer-topic* in the architecture diagram above. Defaults to `cloud-input`. Requires `cpu_temp` in the example application. |
+|RELAY_OUT_TOPIC | **Y** |MQTT topic for sending producer data out to the cloud. Defaults to `relay-out`. Set to `cpu_temp` for the example application. |
 |DAPR_DEBUG       | N |Define as `1` to write debug messages to the *data_relay* service log                                                                                                   |
 
 ## Push app to balenaCloud
