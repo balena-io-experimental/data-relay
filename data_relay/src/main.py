@@ -22,11 +22,11 @@ secret_component_map = {'aws-secrets-manager': False, 'gcp-secret-manager': Fals
 # local components; value indicates if installed
 local_component_map = {'local-mqtt': False}
 # topic names for local MQTT component; blank if not defined
-local_mqtt_topic_map = {'input': os.getenv('LOCAL_MQTT_INPUT_TOPIC', ''),
-                        'output': os.getenv('LOCAL_MQTT_OUTPUT_TOPIC', '')}
+local_mqtt_topic_map = {'out': os.getenv('RELAY_OUT_TOPIC', ''),
+                        'in': os.getenv('RELAY_IN_TOPIC', '')}
 
 dapr_port = os.getenv("DAPR_HTTP_PORT", 3500)
-local_publish_url = f'http://localhost:{dapr_port}/v1.0/publish/local-mqtt/{local_mqtt_topic_map["output"]}?metadata.rawPayload=true'
+local_publish_url = f'http://localhost:{dapr_port}/v1.0/publish/local-mqtt/{local_mqtt_topic_map["in"]}?metadata.rawPayload=true'
 
 app = App()
 dc = DaprClient()
@@ -55,14 +55,14 @@ def find_components():
                 print(f"Found remote component {name}")
 
         # setup incoming event/data handlers
-        if local_component_map['local-mqtt'] and local_mqtt_topic_map['input']:
-            app._servicer.register_topic('local-mqtt', local_mqtt_topic_map['input'],
+        if local_component_map['local-mqtt'] and local_mqtt_topic_map['out']:
+            app._servicer.register_topic('local-mqtt', local_mqtt_topic_map['out'],
                                          local_subscribe, {'rawPayload': 'true'})
-            print(f"Registered input handler for local component local-mqtt")
-        if local_component_map['local-mqtt'] and local_mqtt_topic_map['output']:
+            print(f"Registered relay outbound handler for local MQTT component")
+        if local_component_map['local-mqtt'] and local_mqtt_topic_map['in']:
             for name in components:
                 app._servicer.register_binding(name, remote_binding)
-                print(f"Registered input handler for remote component {name}")
+                print(f"Registered relay inbound handler for remote component {name}")
     except Exception as e:
         print(f"Error parsing components: {e}")
         traceback.print_exc(file=sys.stdout)
@@ -75,29 +75,29 @@ def send_request(data):
         for component in remote_components:
             response = dc.invoke_binding(component, 'create', data)
             if response.text():
-                print(f"Sent data to remote {component} with response {response.text()}")
+                print(f"Forwarded data to remote {component} with response {response.text()}")
             else:
-                print(f"Sent data to remote {component}")
+                print(f"Forwarded data to remote {component}")
     except Exception as e:
         print(e, flush=True)
 
 def local_subscribe(event: v1.Event) -> None:
-    """Receives event/data from local input and forwards to remotes."""
+    """Receives event/data from local component and forwards to remotes."""
     data = str(event.Data(), encoding='utf-8')
-    print(f"Data received from local input: {data}")
+    print(f"Data received from local: {data}")
     send_request(data)
 
 def remote_binding(request: BindingRequest):
-    """Receives event/data from a remote component and forwards to local MQTT output.
+    """Receives event/data from a remote component and forwards to local.
     """
     data = request.text()
     print(f"Data received from remote: {data}")
     # DaprClient should accept publish event with rawPayload metadata on daprd v1.2.2,
     # but the call fails. So must use HTTP request.
-    #response = dc.publish_event(pubsub_name='local-mqtt', topic_name=local_mqtt_output_topic,
+    #response = dc.publish_event(pubsub_name='local-mqtt', topic_name=relay_in_topic,
     #                            metadata=(('rawPayload', 'true')), data=request.text())
     response = requests.post(local_publish_url, data=data)
-    print(f"Sent to local cloud-output with response {response}")
+    print(f"Forwarded data to local with response {response}")
 
 
 print("Data Relay block ==> run dapr and relay data to/from cloud")

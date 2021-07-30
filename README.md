@@ -1,4 +1,4 @@
-![logo](https://raw.githubusercontent.com/balena-io-playground/data-relay/main/logo.png)
+<img src="https://raw.githubusercontent.com/balena-io-playground/data-relay/main/logo.png" alt="logo" width="120" height="120">
 
 **Easily send and receive application data with major cloud providers or other hosts via messaging or specialized services.**
 

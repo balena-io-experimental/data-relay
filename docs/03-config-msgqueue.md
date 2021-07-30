@@ -12,7 +12,7 @@ A message queue supports both sending data to the queue and receiving new data f
 |AWS_SQS_SECRET_KEY         |aws-sqs-secret-key |For access key |
 
 ## Azure Event Hub
-The subscription for the managed identity must include the *Azure Event Hubs Data Sender* and/or *Azure Event Hubs Data Receiver* roles.
+The subscription for the managed identity must include the *Azure Event Hubs Data Sender* and/or *Azure Event Hubs Data Receiver* roles depending on use.
 
 | Application Variable Name | Secret Store Key | Description |
 |---------------------------|------------------|-------------|

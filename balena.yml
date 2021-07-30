@@ -1,4 +1,4 @@
-name: cloudBlock
+name: data-relay
 type: sw.block
 description: >-
   Easily read and write application data via cloud messaging or specialized services on AWS, Azure or Google Cloud Platform
@@ -14,7 +14,7 @@ assets:
         https://raw.githubusercontent.com/balena-io-playground/data-relay/main/logo.png
 data:
   applicationEnvironmentVariables:
-    - LOCAL_MQTT_INPUT_TOPIC: cloud-input
+    - RELAY_OUT_TOPIC: relay-out
   defaultDeviceType: raspberry-pi4-64
   supportedDeviceTypes:
     - raspberry-pi4-64
