@@ -15,8 +15,9 @@ assets:
 data:
   applicationEnvironmentVariables:
     - RELAY_OUT_TOPIC: relay-out
-  defaultDeviceType: raspberry-pi4-64
+  defaultDeviceType: raspberrypi4-64
   supportedDeviceTypes:
-    - raspberry-pi4-64
+    - raspberrypi4-64
     - intel-nuc
-version: 0.0.4
+    - fincm3
+version: 0.0.5

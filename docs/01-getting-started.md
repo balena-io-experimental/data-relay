@@ -7,7 +7,7 @@ Follow these steps to implement the data flow in the diagram.
 
  1. Define a data producer and Docker Compose script for the services on the device
  1. Create a balena application and configure variables
- 1. Push the Compose script to build and run the containers for the app
+ 1. Push the Compose script to build and run the containers on the device
 
 To help you get started, the [CPU Temperature](https://github.com/balena-io-playground/data-relay/tree/main/examples/cputemp) example application implements the first step. In this example we use a data producer that takes temperature readings from the device's CPU. These readings are readily available from most devices and don't require special setup.
 
