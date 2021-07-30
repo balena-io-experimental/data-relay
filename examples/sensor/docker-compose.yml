@@ -4,7 +4,7 @@ services:
         # Local build in data_relay directory required only for MS Azure Key Vault
         # secret store to copy in certificate file. Otherwise OK to use image.
         #build: data_relay
-        image: kb2ma/data-relay
+        image: balenablocks/data-relay
         privileged: true
         tty: true
         restart: always

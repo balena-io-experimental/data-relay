@@ -2,7 +2,7 @@ version: '2.1'
 volumes:
 services:
     data_relay:
-        build: kb2ma/data-relay
+        build: balenablocks/data-relay
         privileged: true
         restart: always
         network_mode: host
