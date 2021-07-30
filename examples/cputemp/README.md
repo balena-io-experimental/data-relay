@@ -5,7 +5,7 @@ Set the environment variables below as needed.
 
 | Variable | Required? | Notes |
 | -------- | :-------: | ----- |
-| LOCAL_MQTT_INPUT_TOPIC | **Y** | Must set to `cpu_temp` |
+| RELAY_OUT_TOPIC | **Y** | Must set to `cpu_temp` |
 |  | **Y** | See Data Relay block [documentation](https://stupefied-johnson-ee1062.netlify.app/docs/message-queues) for AWS, Azure, etc. service variables |
 | DAPR_DEBUG | N | Set to _1_ for debug messages in the data_relay log |
 
@@ -14,8 +14,8 @@ Set the environment variables below as needed.
 Below is example log output to GCP Pub/Sub.
 
 ```
-13.06.21 11:25:04 (-0400)  data_relay  Data received from local input: bc8b1b0, 06/13/2021 15:25:04, 31.00
-13.06.21 11:25:04 (-0400)  data_relay  Sending to output gcp-pubsub
+13.06.21 11:25:04 (-0400)  data_relay  Data received from local: bc8b1b0, 06/13/2021 15:25:04, 31.00
+13.06.21 11:25:04 (-0400)  data_relay  Forwarded data to remote gcp-pubsub
 ```
 
 # Contents
