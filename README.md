@@ -10,7 +10,7 @@
 
 ## Documentation
 
-Head over to our [docs](docs/) to see how to get started and understand how it works.
+Head over to our [docs](https://stupefied-johnson-ee1062.netlify.app/) to see how to get started and understand how it works.
 
 ## Motivation
 
