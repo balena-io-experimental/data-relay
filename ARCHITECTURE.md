@@ -1,4 +1,4 @@
-# Architecture
+# Architecture and Roadmap
 
 The diagram below shows the Data Relay block and related components.
 
@@ -13,12 +13,11 @@ The diagram below shows the Data Relay block and related components.
 | cloud service| A supported service at a cloud provider to receive or provide data.                         |
 
 Generally an application includes a data producer or a data consumer but not both.
-## Data Relay Block Interfaces
+
 The Data Relay block distinguishes between internal and external interfaces. An internal interface provides local access to the Data Relay block. An external interface provides access to remote resources on another host or in the cloud.
 
 Data flows from an internal interface, through the Data Relay block, to an external interface -- and vice versa. Data does not flow between internal interfaces within the Data Relay block.
 
-# Roadmap
 
 ## RESTful resource access
 Presently Data Relay block assumes that any data intended for output is sent to all defined external cloud services. So if both a message queue and InfluxDB are defined, outbound data is sent to both. To direct some data to a single output, we plan to provide a separate topic for each in the device's MQTT network.
@@ -48,7 +47,4 @@ Dapr provides many integrations we may wish to support.. The major cloud provide
 
 
 ## Session security
-placeholder
-
-## Image size reduction
 placeholder
